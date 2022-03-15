@@ -1,0 +1,12 @@
+{
+    "name": "tabit-server",
+    "description": "TabIt the best AI autocomplete tool",
+    "author": "Sudeep",
+    "license": "MIT",
+    "version": "0.0.1",
+    "dependencies": {
+      "vscode-languageserver": "^7.0.0",
+      "vscode-languageserver-textdocument": "^1.0.4"
+    }
+  }
+  
