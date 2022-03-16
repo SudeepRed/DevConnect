@@ -23,7 +23,7 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
-		"compile": "webpack",
+		"compile": "tsc -b",
 		"watch": "webpack --watch",
 		"postinstall": "cd client && npm install && cd ../server && npm install && cd ../"
 	},
