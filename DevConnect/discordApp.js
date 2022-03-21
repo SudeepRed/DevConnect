@@ -12,10 +12,14 @@ client.on('ready',()=>{
     console.log('bot is ready')
 })
 
-client.on('messageCreate',(message)=>{
-    if(message.content === 'ping') message.reply({
-        content: 'pog',
-    })
+client.on('messageCreate', async(message)=>{
+    // console.log(message)
+    await message.startThread({
+        name: 'bug',
+        autoArchiveDuration: 60,
+        reason: 'Needed a separate thread for food',
+    });
+    
 })
 
 client.login(process.env.DISCORD_TOKEN);
