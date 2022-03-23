@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 const getFeatureBlock = (outputTitle) => {
   const blocks = [
     {
@@ -111,4 +112,4 @@ const getBugBlock = (outputTitle,priority) => {
 module.exports = {
     getBugBlock,
     getFeatureBlock
-}
+};

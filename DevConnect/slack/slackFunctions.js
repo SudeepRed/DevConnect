@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 const OpenAI = require("../open-ai");
 const slackBlocks = require("./slackBlocks");
 const messageResponce = async (message, app) => {
@@ -24,11 +25,11 @@ const messageResponce = async (message, app) => {
 
 const getPriority = (text) => {
   let priority = "";
-  if (text.includes("low")) priority = "Low";
-  if (text.includes("high")) priority = "High";
-  if (text.includes("medium")) priority = "Medium";
-  if (text.includes("urgent")) priority = "Urgent";
-  if (priority == "") priority = "Low/Medium";
+  if (text.includes("low")) {priority = "Low";}
+  if (text.includes("high")) {priority = "High";}
+  if (text.includes("medium")) {priority = "Medium";}
+  if (text.includes("urgent")) {priority = "Urgent";}
+  if (priority === "") {priority = "Low/Medium";}
   return priority;
 };
 

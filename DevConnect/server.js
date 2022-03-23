@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const { App } = require("@slack/bolt");
 require("dotenv").config();
 
