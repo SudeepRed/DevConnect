@@ -4,15 +4,16 @@ import * as vscode from "vscode";
 import { authenticate } from "./authenticate";
 import { HelloWorldPanel } from "./HelloWorldPanel";
 import { TokenManager } from "./TokenManger";
+import { SidebarProvider } from "./SidebarProvider";
 export function activate(context: vscode.ExtensionContext) {
   TokenManager.globalState = context.globalState;
-  
+  const sidebarProvider = new SidebarProvider(context.extensionUri);
   console.log('Congratulations, your extension "devconnect" is now active!');
 
   context.subscriptions.push(
     vscode.commands.registerCommand("devconnect.helloWorld", () => {
       console.log("hello");
-      vscode.window.showInformationMessage("info"+TokenManager.getToken());
+      vscode.window.showInformationMessage("info" + TokenManager.getToken());
       HelloWorldPanel.createOrShow(context.extensionUri);
     })
   );
@@ -21,6 +22,16 @@ export function activate(context: vscode.ExtensionContext) {
       console.log("hello");
       authenticate();
     })
+  );
+  // const item = vscode.window.createStatusBarItem(
+  //   vscode.StatusBarAlignment.Left
+  // );
+  
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      "devconnect-sidebar",
+      sidebarProvider
+    )
   );
 }
 

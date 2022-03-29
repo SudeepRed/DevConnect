@@ -8,6 +8,7 @@ const schema = require("./db/schema");
 const slackFunctions = require("./slack/slackFunctions");
 const DBquery = require("./db/queries");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 
 const slackApp = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -43,9 +44,13 @@ slackApp.message("", async ({ message, say }) => {
         console.log(profile);
         let res = await DBquery.findUserExists(profile.id);
         cb(null, {
-          accessToken: jwt.sign({ userId: profile.id }, "aksjdhajkhsdgal;sdh", {
-            expiresIn: "1y",
-          }),
+          accessToken: jwt.sign(
+            { userId: profile.id },
+            process.env.ACCESS_TOKEN_SECRET,
+            {
+              expiresIn: "1y",
+            }
+          ),
         });
         if (!res) {
           DBquery.addUserAuth(profile.id, profile);
@@ -57,13 +62,46 @@ slackApp.message("", async ({ message, say }) => {
   );
   //express app
   const expressApp = express();
-
+  expressApp.use(cors({ origin: "*" }));
   //paths
   expressApp.get(
     "/auth/github",
     passport.authenticate("github", { session: false })
   );
+  expressApp.get("/me", async (req, res) => {
+    // Bearer 120jdklowqjed021901
+    const authHeader = req.headers.authorization;
+    console.log(authHeader);
+    if (!authHeader) {
+      res.send({ user: null });
+      return;
+    }
 
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      res.send({ user: null });
+      return;
+    }
+
+    let userId = "";
+
+    try {
+      const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      userId = payload.userId;
+    } catch (err) {
+      res.send({ user: null });
+      return;
+    }
+
+    if (!userId) {
+      res.send({ user: null });
+      return;
+    }
+
+    const user = await DBquery.findUser(userId);
+
+    res.send({ user });
+  });
   //auth call back
   expressApp.get(
     "/auth/github/callback",

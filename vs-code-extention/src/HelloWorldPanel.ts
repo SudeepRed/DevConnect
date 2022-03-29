@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { apiBaseUrl } from "./constants";
 import { getNonce } from "./getNonce";
 
 export class HelloWorldPanel {
@@ -103,6 +104,7 @@ export class HelloWorldPanel {
           //   await Util.globalState.update(refreshTokenKey, data.refreshToken);
           break;
         }
+        
       }
     });
   }
@@ -150,6 +152,7 @@ export class HelloWorldPanel {
         <link href="" rel="stylesheet">
         <script nonce="${nonce}">
         const tsvscode = acquireVsCodeApi();
+        const apiBaseUrl = ${JSON.stringify(apiBaseUrl)};
         </script>
 			</head>
       <body>

@@ -10,6 +10,16 @@ const findUserExists = async (id) => {
     return false;
   }
 };
+const findUser = async (id) => {
+  try {
+    let res = await client.query(`SELECT profile FROM user_auth WHERE id = $1`, [id]);
+    res = res.rows[0].profile;
+    console.log(res);
+    return res
+  } catch (e) {
+    return null;
+  }
+}
 const addUserAuth = async (id, profile) => {
   try {
     await client.query(`INSERT INTO user_auth (id, profile) VALUES ($1, $2)`, [
@@ -36,4 +46,5 @@ module.exports = {
   findUserExists,
   addUserAuth,
   updateUserAuth,
+  findUser
 };

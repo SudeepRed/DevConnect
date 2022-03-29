@@ -11,10 +11,31 @@
   ],
   "activationEvents": [
     "onCommand:devconnect.helloWorld",
-    "onCommand:devconnect.authenticate"
+    "onCommand:devconnect.authenticate",
+    "onView:devconnect-sidebar"
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "devconnect-sidebar-view",
+          "title": "DevConnect",
+          "icon": "media/DevConnect.svg"
+        }
+      ]
+    },
+    "views": {
+      "devconnect-sidebar-view": [
+        {
+          "type": "webview",
+          "id": "devconnect-sidebar",
+          "name": "DevConnect",
+          "icon": "media/DevConnect.svg",
+          "contextualTitle": "DevConnect"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "devconnect.helloWorld",
