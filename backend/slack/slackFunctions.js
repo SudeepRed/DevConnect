@@ -41,6 +41,7 @@ const postMessage = async (app, message, blocks) => {
     blocks: blocks,
     text: message.text,
   });
+  return;
 };
 
 module.exports = {

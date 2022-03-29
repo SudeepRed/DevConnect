@@ -23,9 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
       authenticate();
     })
   );
-  // const item = vscode.window.createStatusBarItem(
-  //   vscode.StatusBarAlignment.Left
-  // );
   
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(

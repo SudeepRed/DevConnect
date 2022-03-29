@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { apiBaseUrl } from "./constants";
 import { getNonce } from "./getNonce";
+import { TokenManager } from "./TokenManger";
 
 export class HelloWorldPanel {
   /**
@@ -29,7 +30,7 @@ export class HelloWorldPanel {
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
       HelloWorldPanel.viewType,
-      "VSinder",
+      "DevConnect",
       column || vscode.ViewColumn.One,
       {
         // Enable javascript in the webview
@@ -100,11 +101,15 @@ export class HelloWorldPanel {
           break;
         }
         case "tokens": {
-          //   await Util.globalState.update(accessTokenKey, data.accessToken);
-          //   await Util.globalState.update(refreshTokenKey, data.refreshToken);
           break;
         }
-        
+        case "get-token": {
+          webview.postMessage({
+            type: "token",
+            value: TokenManager.getToken(),
+          });
+          break;
+        }
       }
     });
   }
@@ -145,7 +150,9 @@ export class HelloWorldPanel {
 					Use a content security policy to only allow loading images from https or from our extension directory,
 					and only allow scripts that have a specific nonce.
         -->
-        <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'nonce-${nonce}';">
+        <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${
+          webview.cspSource
+        }; script-src 'nonce-${nonce}';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link href="${stylesResetUri}" rel="stylesheet">
 				<link href="${stylesMainUri}" rel="stylesheet">
