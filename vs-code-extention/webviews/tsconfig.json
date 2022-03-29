@@ -1,6 +1,6 @@
 {
     "extends": "@tsconfig/svelte/tsconfig.json",
-    "include": ["./**/*", ],
+    "include": ["./**/*", "../tailwind.config.js", ],
     "exclude": ["../node_modules/*"],
     "compilerOptions": {"strict": true, }
   }

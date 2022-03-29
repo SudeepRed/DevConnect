@@ -1,0 +1,23 @@
+{
+  "name": "devconnetbackend",
+  "version": "1.0.0",
+  "description": "backend for devconnect",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Sudeep",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/bolt": "^3.10.0",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "openai": "^2.0.5",
+    "passport": "^0.5.2",
+    "passport-github": "^1.1.0",
+    "pg": "^8.7.3"
+  }
+}

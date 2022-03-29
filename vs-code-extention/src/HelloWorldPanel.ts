@@ -149,6 +149,7 @@ export class HelloWorldPanel {
 				<link href="${stylesMainUri}" rel="stylesheet">
         <link href="" rel="stylesheet">
         <script nonce="${nonce}">
+        const tsvscode = acquireVsCodeApi();
         </script>
 			</head>
       <body>
