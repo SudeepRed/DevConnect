@@ -3,12 +3,16 @@
 import * as vscode from "vscode";
 import { authenticate } from "./authenticate";
 import { HelloWorldPanel } from "./HelloWorldPanel";
+import { TokenManager } from "./TokenManger";
 export function activate(context: vscode.ExtensionContext) {
+  TokenManager.globalState = context.globalState;
+  
   console.log('Congratulations, your extension "devconnect" is now active!');
 
   context.subscriptions.push(
     vscode.commands.registerCommand("devconnect.helloWorld", () => {
       console.log("hello");
+      vscode.window.showInformationMessage("info"+TokenManager.getToken());
       HelloWorldPanel.createOrShow(context.extensionUri);
     })
   );
