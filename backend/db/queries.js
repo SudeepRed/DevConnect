@@ -5,7 +5,6 @@ const setInstallation = async (
   user_details,
   teaminfo
 ) => {
-  console.log("HEre");
   try {
     await client.query(
       `INSERT INTO slack_workspace (teamid,installation,teaminfo) VALUES ($1,$2,$3)
@@ -14,8 +13,7 @@ const setInstallation = async (
       UPDATE SET installation = $2, teaminfo = $3`,
       [teamid, installation, teaminfo]
     );
-    console.log(user_details);
-    console.log(teamid);
+
     const res = await client.query(
       `INSERT INTO slack_github (email, teamid) VALUES ($1,$2) ON CONFLICT DO NOTHING`,
       [user_details, teamid]
@@ -55,7 +53,6 @@ const findUser = async (id) => {
       [id]
     );
     res = res.rows[0].profile;
-    console.log(res);
     return res;
   } catch (e) {
     return null;
@@ -120,8 +117,11 @@ const insertSlackPost = async (slack_post) => {
 };
 const getUserWorkspaces = async (email) => {
   try {
-    const res = await client.query(`SELECT w.teaminfo FROM slack_workspace as w INNER JOIN slack_github sg ON sg.teamid=w.teamid WHERE sg.email = $1`,[email]);
-    return res.rows
+    const res = await client.query(
+      `SELECT w.teaminfo FROM slack_workspace as w INNER JOIN slack_github sg ON sg.teamid=w.teamid WHERE sg.email = $1`,
+      [email]
+    );
+    return res.rows;
   } catch {}
   const t = {
     id: "T0377063THA",
@@ -150,6 +150,12 @@ const getUserWorkspaces = async (email) => {
     is_verified: false,
   };
 };
+const getInfo = async (teamid)=>{
+  try{
+    let data = await client.query(`SELECT * FROM slack_posts WHERE teamid = $1`,[teamid]);
+    return data.rows
+  }catch(e){console.log(e)}
+}
 
 module.exports = {
   findUserExists,
@@ -159,5 +165,6 @@ module.exports = {
   setInstallation,
   getInstallation,
   insertSlackPost,
-  getUserWorkspaces
+  getUserWorkspaces,
+  getInfo,
 };

@@ -5,7 +5,7 @@
 
   let accessToken = "";
   let loading = true;
-  let user = "";
+  let user: any;
   let workspaces: { name: any; id: any; icon: any }[] = [];
 
   onMount(async () => {
@@ -40,8 +40,10 @@
 {#if loading}
   <div>Loading...</div>
 {:else if user}
-  <pre>{JSON.stringify(user, null, 2)}</pre>
+  <h2>Hey&#128075! {user["displayName"]}</h2>
+  <div>&nbsp;</div>
   <WorkspaceIcons {workspaces} />
+  <div>&nbsp;</div>
   <button on:click={async () => {}}>Add to slack</button>
 {:else}
   <div>No user logged in</div>
@@ -49,10 +51,17 @@
 <!-- svelte-ignore missing-declaration -->
 <button
   on:click={() => {
+    // tsvscode.commands.executeCommand("devconnect.dashboard");
     tsvscode.postMessage({
-      type: "onInfo",
-      value: "info",
+      type: "dashboard",
+      value: "hehe",
     });
   }}
   >info
 </button>
+
+<style>
+  h2 {
+    font-weight: normal;
+  }
+</style>

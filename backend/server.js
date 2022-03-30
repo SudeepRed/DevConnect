@@ -9,6 +9,7 @@ const slackFunctions = require("./slack/slackFunctions");
 const DBquery = require("./db/queries");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const auth = require("./isAuth");
 
 const slackApp = new App({
   // token: process.env.SLACK_BOT_TOKEN,
@@ -32,7 +33,6 @@ const slackApp = new App({
     storeInstallation: async (installation) => {
       if (installation.team !== undefined) {
         try {
-          console.log("DONE");
           const user_details = await slackApp.client.users.info({
             token: installation.bot.token,
             user: installation.user.id,
@@ -41,7 +41,6 @@ const slackApp = new App({
             token: installation.bot.token,
             teamid: installation.team.id,
           });
-          console.log(teaminfo);
           return await DBquery.setInstallation(
             installation.team.id,
             installation,
@@ -73,7 +72,6 @@ const slackApp = new App({
 
 slackApp.message("", async ({ message, say, ack, client }) => {
   //Ignore thread bot reply
-  console.log(message);
   const link = await slackApp.client.chat.getPermalink({
     token: process.env.SLACK_BOT_TOKEN,
     channel: message.channel,
@@ -118,7 +116,6 @@ slackApp.message("", async ({ message, say, ack, client }) => {
         callbackURL: "http://localhost:3002/auth/github/callback",
       },
       async function (accessToken, refreshToken, profile, cb) {
-        // console.log(profile);
         let res = await DBquery.findUserExists(profile.id);
         cb(null, {
           accessToken: jwt.sign(
@@ -139,6 +136,7 @@ slackApp.message("", async ({ message, say, ack, client }) => {
   );
   //express app
   const expressApp = express();
+  expressApp.use(express.json());
   expressApp.use(cors({ origin: "*" }));
   //paths
   expressApp.get(
@@ -149,7 +147,7 @@ slackApp.message("", async ({ message, say, ack, client }) => {
   expressApp.get("/me", async (req, res) => {
     // Bearer 120jdklowqjed021901
     const authHeader = req.headers.authorization;
-    console.log(authHeader);
+
     if (!authHeader) {
       res.send({ user: null });
       return;
@@ -191,6 +189,16 @@ slackApp.message("", async ({ message, say, ack, client }) => {
       res.redirect(`http://localhost:54321/auth/${req.user.accessToken}`);
     }
   );
+  expressApp.post("/getInfo", async (req, res) => {
+    const { teamid } = req.body;
+    console.log(req.body);
+    if (teamid) {
+      const data = await DBquery.getInfo(teamid);
+      console.log(data);
+      return res.send({data})
+    }
+    else return res.status(200).json({ data: null });
+  });
 
   //healthcheck
   expressApp.get("/", (req, res) => {

@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { authenticate } from "./authenticate";
 import { apiBaseUrl } from "./constants";
+import { DevConnectPanel } from "./DevConnectPanel";
 import { getNonce } from "./getNonce";
 import { TokenManager } from "./TokenManger";
 
@@ -28,6 +29,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           TokenManager.setToken("");
           break;
         }
+        case "dashboard": {
+          console.log("dashboard");
+          DevConnectPanel.kill();
+          setTimeout(() => {
+            vscode.commands.executeCommand("devconnect.dashboard");
+          }, 500);
+          TokenManager.setTeamid(data.value);
+          break;
+        }
         // case "authenticate": {
         //   authenticate(() => {
         //     webviewView.webview.postMessage({
@@ -38,6 +48,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         //   break;
         // }
         case "get-token": {
+          console.log(TokenManager.getToken());
           webviewView.webview.postMessage({
             type: "token",
             value: TokenManager.getToken(),

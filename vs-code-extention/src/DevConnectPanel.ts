@@ -86,6 +86,16 @@ export class DevConnectPanel {
     this._panel.webview.html = this._getHtmlForWebview(webview);
     webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
+        case "dashboard": {
+          if (!data.value) {
+            return;
+          }
+          webview.postMessage({
+            type: "getInfo",
+            value: TokenManager.getTeamid(),
+          });
+          break;
+        }
         case "onInfo": {
           if (!data.value) {
             return;
@@ -110,6 +120,7 @@ export class DevConnectPanel {
           });
           break;
         }
+        
       }
     });
   }

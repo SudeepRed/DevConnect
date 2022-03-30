@@ -11,6 +11,7 @@
   ],
   "activationEvents": [
     "onCommand:devconnect.helloWorld",
+    "onCommand:devconnect.dashboard",
     "onCommand:devconnect.authenticate",
     "onView:devconnect-sidebar"
   ],
@@ -42,23 +43,13 @@
         "title": "Hello World"
       },
       {
-        "command": "devconnect.askQuestion",
-        "category": "devconnect",
-        "title": "Ask Question"
-      },
-      {
-        "command": "devconnect.refresh",
-        "category": "devconnect",
-        "title": "Refresh"
-      },
-      {
-        "command": "devconnect.addTodo",
-        "category": "devconnect",
-        "title": "Add Todo From Selection"
+        "command": "devconnect.dashboard",
+        "category": "DevConnect",
+        "title": "Dashboard"
       },
       {
         "command": "devconnect.authenticate",
-        "category": "devconnect",
+        "category": "DevConnect",
         "title": "Authenticate"
       }
     ]
