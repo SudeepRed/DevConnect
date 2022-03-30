@@ -3,11 +3,11 @@ import { apiBaseUrl } from "./constants";
 import { getNonce } from "./getNonce";
 import { TokenManager } from "./TokenManger";
 
-export class HelloWorldPanel {
+export class DevConnectPanel {
   /**
    * Track the currently panel. Only allow a single panel to exist at a time.
    */
-  public static currentPanel: HelloWorldPanel | undefined;
+  public static currentPanel: DevConnectPanel | undefined;
 
   public static readonly viewType = "hello-world";
 
@@ -21,15 +21,15 @@ export class HelloWorldPanel {
       : undefined;
 
     // If we already have a panel, show it.
-    if (HelloWorldPanel.currentPanel) {
-      HelloWorldPanel.currentPanel._panel.reveal(column);
-      HelloWorldPanel.currentPanel._update();
+    if (DevConnectPanel.currentPanel) {
+      DevConnectPanel.currentPanel._panel.reveal(column);
+      DevConnectPanel.currentPanel._update();
       return;
     }
 
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
-      HelloWorldPanel.viewType,
+      DevConnectPanel.viewType,
       "DevConnect",
       column || vscode.ViewColumn.One,
       {
@@ -44,16 +44,16 @@ export class HelloWorldPanel {
       }
     );
 
-    HelloWorldPanel.currentPanel = new HelloWorldPanel(panel, extensionUri);
+    DevConnectPanel.currentPanel = new DevConnectPanel(panel, extensionUri);
   }
 
   public static kill() {
-    HelloWorldPanel.currentPanel?.dispose();
-    HelloWorldPanel.currentPanel = undefined;
+    DevConnectPanel.currentPanel?.dispose();
+    DevConnectPanel.currentPanel = undefined;
   }
 
   public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-    HelloWorldPanel.currentPanel = new HelloWorldPanel(panel, extensionUri);
+    DevConnectPanel.currentPanel = new DevConnectPanel(panel, extensionUri);
   }
 
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -67,7 +67,7 @@ export class HelloWorldPanel {
   }
 
   public dispose() {
-    HelloWorldPanel.currentPanel = undefined;
+    DevConnectPanel.currentPanel = undefined;
 
     // Clean up our resources
     this._panel.dispose();
@@ -117,7 +117,7 @@ export class HelloWorldPanel {
   private _getHtmlForWebview(webview: vscode.Webview) {
     // // And the uri we use to load this script in the webview
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out/compiled", "Hello.js")
+      vscode.Uri.joinPath(this._extensionUri, "out/compiled", "Panel.js")
     );
 
     // Local path to css styles
@@ -136,7 +136,7 @@ export class HelloWorldPanel {
     const stylesResetUri = webview.asWebviewUri(styleResetPath);
     const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
     const cssUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "compiled/swiper.css")
+      vscode.Uri.joinPath(this._extensionUri, "out/compiled", "Panel.css")
     );
 
     // Use a nonce to only allow specific scripts to be run

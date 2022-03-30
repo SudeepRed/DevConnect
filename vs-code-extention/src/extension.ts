@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { authenticate } from "./authenticate";
-import { HelloWorldPanel } from "./HelloWorldPanel";
+import { DevConnectPanel } from "./DevConnectPanel";
 import { TokenManager } from "./TokenManger";
 import { SidebarProvider } from "./SidebarProvider";
 export function activate(context: vscode.ExtensionContext) {
@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("devconnect.helloWorld", () => {
       console.log("hello");
       vscode.window.showInformationMessage("info" + TokenManager.getToken());
-      HelloWorldPanel.createOrShow(context.extensionUri);
+      DevConnectPanel.createOrShow(context.extensionUri);
     })
   );
   context.subscriptions.push(

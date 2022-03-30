@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 const OpenAI = require("../open-ai");
 const slackBlocks = require("./slackBlocks");
-const messageResponce = async (message) => {
+const DBquery = require("./../db/queries");
+const messageResponce = async (message, link) => {
   let text = message.text;
   if (text.length < 10) {
     return null;
@@ -13,11 +14,35 @@ const messageResponce = async (message) => {
   } else if (classifiedCategory.includes("bug")) {
     const messageTitle = await OpenAI.addTitle(text);
     let priority = getPriority(classifiedCategory);
+    const slack_post = {
+      teamid: message.team,
+      message: message.text,
+      userid: message.user,
+      ts: message.ts,
+      channelid: message.channel,
+      category: "bug",
+      title: messageTitle,
+      priority: priority,
+      message_link: link,
+    };
+    await DBquery.insertSlackPost(slack_post);
     let blocks = slackBlocks.getBugBlock(messageTitle, priority);
     return blocks;
   } else if (classifiedCategory.includes("feature")) {
     const outputTitle = await addTitle(text);
     let blocks = slackBlocks.getFeatureBlock(outputTitle);
+    const slack_post = {
+      teamid: message.team,
+      message: message.text,
+      userid: message.user,
+      ts: message.ts,
+      channelid: message.channel,
+      category: "feature",
+      title: messageTitle,
+      priority: priority,
+      message_link: link,
+    };
+    await DBquery.insertSlackPost(slack_post);
     return blocks;
   }
 };

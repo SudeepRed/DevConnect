@@ -18,7 +18,13 @@ const slackApp = new App({
   stateSecret: "aksjdhakjsdhkajd",
   // socketMode: true,
   // appToken: process.env.SLACK_APP_TOKEN,
-  scopes: ["chat:write", "channels:history"],
+  scopes: [
+    "chat:write",
+    "channels:history",
+    "users:read",
+    "users:read.email",
+    "team:read",
+  ],
   installerOptions: {
     stateVerification: false,
   },
@@ -27,7 +33,21 @@ const slackApp = new App({
       if (installation.team !== undefined) {
         try {
           console.log("DONE");
-          return await DBquery.setInstallation(installation.team, installation);
+          const user_details = await slackApp.client.users.info({
+            token: installation.bot.token,
+            user: installation.user.id,
+          });
+          const teaminfo = await slackApp.client.team.info({
+            token: installation.bot.token,
+            teamid: installation.team.id,
+          });
+          console.log(teaminfo);
+          return await DBquery.setInstallation(
+            installation.team.id,
+            installation,
+            user_details.user.profile.email,
+            teaminfo.team
+          );
         } catch (error) {
           console.log(error);
         }
@@ -53,14 +73,27 @@ const slackApp = new App({
 
 slackApp.message("", async ({ message, say, ack, client }) => {
   //Ignore thread bot reply
+  console.log(message);
+  const link = await slackApp.client.chat.getPermalink({
+    token: process.env.SLACK_BOT_TOKEN,
+    channel: message.channel,
+    message_ts: message.ts,
+  });
+
   if (!message.hasOwnProperty("bot_profile")) {
-   await client.chat.postMessage({
-      token: process.env.SLACK_BOT_TOKEN,
-      channel: message.channel,
-      thread_ts: message.ts,
-      blocks: await slackFunctions.messageResponce(message),
-      text: message.text,
-    });
+    const blocks = await slackFunctions.messageResponce(
+      message,
+      link.permalink
+    );
+    if (blocks) {
+      await client.chat.postMessage({
+        token: process.env.SLACK_BOT_TOKEN,
+        channel: message.channel,
+        thread_ts: message.ts,
+        blocks: blocks,
+        text: message.text,
+      });
+    }
   }
   return;
 });
@@ -144,8 +177,10 @@ slackApp.message("", async ({ message, say, ack, client }) => {
     }
 
     const user = await DBquery.findUser(userId);
+    const email = user.emails[0].value;
+    const workspaces = await DBquery.getUserWorkspaces(email);
 
-    res.send({ user });
+    res.send({ workspaces: workspaces, userInfo: user });
   });
   //auth call back
   expressApp.get(

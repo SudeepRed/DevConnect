@@ -1,13 +1,24 @@
 const client = require("./db");
-const setInstallation = async (teamid, installation) => {
+const setInstallation = async (
+  teamid,
+  installation,
+  user_details,
+  teaminfo
+) => {
   console.log("HEre");
   try {
-    return await client.query(
-      `INSERT INTO slack_workspace (teamid,installation) VALUES ($1,$2)
+    await client.query(
+      `INSERT INTO slack_workspace (teamid,installation,teaminfo) VALUES ($1,$2,$3)
       ON CONFLICT(teamid) 
       DO 
-      UPDATE SET installation = $2`,
-      [teamid, installation]
+      UPDATE SET installation = $2, teaminfo = $3`,
+      [teamid, installation, teaminfo]
+    );
+    console.log(user_details);
+    console.log(teamid);
+    const res = await client.query(
+      `INSERT INTO slack_github (email, teamid) VALUES ($1,$2) ON CONFLICT DO NOTHING`,
+      [user_details, teamid]
     );
   } catch (e) {
     console.log("oops");
@@ -74,6 +85,72 @@ const updateUserAuth = async (id, profile) => {
     console.log(e, "ERROR in updating user_auth");
   }
 };
+const insertSlackPost = async (slack_post) => {
+  try {
+    const {
+      teamid,
+      message,
+      userid,
+      ts,
+      channelid,
+      category,
+      title,
+      priority,
+      message_link,
+    } = slack_post;
+    console.log(slack_post);
+    console.log("Slack POST INSERT");
+    const res = await client.query(
+      `INSERT INTO slack_posts (teamid, message, userid, ts, channelid, category, title, priority, message_link) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      [
+        teamid,
+        message,
+        userid,
+        ts,
+        channelid,
+        category,
+        title,
+        priority,
+        message_link,
+      ]
+    );
+  } catch (e) {
+    console.log(e, "ERROR in inserting slack_post");
+  }
+};
+const getUserWorkspaces = async (email) => {
+  try {
+    const res = await client.query(`SELECT w.teaminfo FROM slack_workspace as w INNER JOIN slack_github sg ON sg.teamid=w.teamid WHERE sg.email = $1`,[email]);
+    return res.rows
+  } catch {}
+  const t = {
+    id: "T0377063THA",
+    name: "VSChat",
+    url: "https://vschatworkspace.slack.com/",
+    domain: "vschatworkspace",
+    email_domain: "",
+    icon: {
+      image_102:
+        "https://a.slack-edge.com/80588/img/avatars-teams/ava_0015-102.png",
+      image_132:
+        "https://a.slack-edge.com/80588/img/avatars-teams/ava_0015-132.png",
+      image_230:
+        "https://a.slack-edge.com/80588/img/avatars-teams/ava_0015-230.png",
+      image_34:
+        "https://a.slack-edge.com/80588/img/avatars-teams/ava_0015-34.png",
+      image_44:
+        "https://a.slack-edge.com/80588/img/avatars-teams/ava_0015-44.png",
+      image_68:
+        "https://a.slack-edge.com/80588/img/avatars-teams/ava_0015-68.png",
+      image_88:
+        "https://a.slack-edge.com/80588/img/avatars-teams/ava_0015-88.png",
+      image_default: true,
+    },
+    avatar_base_url: "https://ca.slack-edge.com/",
+    is_verified: false,
+  };
+};
+
 module.exports = {
   findUserExists,
   addUserAuth,
@@ -81,4 +158,6 @@ module.exports = {
   findUser,
   setInstallation,
   getInstallation,
+  insertSlackPost,
+  getUserWorkspaces
 };

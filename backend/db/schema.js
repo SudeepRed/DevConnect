@@ -12,22 +12,52 @@ const createdb = async () => {
   } catch (e) {
     console.log("Failed to create user_auth table", e);
   }
-  try{
+  try {
     await client.query(`CREATE TABLE IF NOT EXISTS slack_workspace (
       teamid varchar(50) PRIMARY KEY,
-      installation JSON NOT NULL
-    )`)
-  }catch (e) {
+      installation JSON NOT NULL,
+      teaminfo JSON NOT NULL
+    )`);
+  } catch (e) {
     console.log("Failed to create slack_workspace table", e);
   }
-  try{
+  try {
     await client.query(`CREATE INDEX IF NOT EXISTS idx_email_github 
-    ON user_auth(email)`)
-  }catch (e) {
+    ON user_auth(email)`);
+  } catch (e) {
     console.log("Failed to create index on email github auth", e);
   }
-  
-  
+  try {
+    await client.query(`CREATE TABLE IF NOT EXISTS slack_posts(
+      teamid varchar(50) NOT NULL,
+      message text NOT NULL,
+      userid varchar(50) NOT NULL,
+      ts numeric PRIMARY KEY,
+      channelid varchar(50) NOT NULL,
+      category varchar(25) NOT NULL,
+      title text NOT NULL,
+      priority varchar(25) NOT NULL,
+      message_link varchar(500)
+    )`);
+  } catch (e) {
+    console.log("Failed to create slack_posts table", e);
+  }
+  try {
+    await client.query(`CREATE TABLE IF NOT EXISTS slack_github(
+      email varchar(100) NOT NULL,
+        teamid varchar(50) NOT NULL,
+        PRIMARY KEY (email,teamid),
+        CONSTRAINT fk_github
+            FOREIGN KEY(email) 
+          REFERENCES user_auth(email),
+        CONSTRAINT fk_slack
+            FOREIGN KEY(teamid) 
+          REFERENCES slack_workspace(teamid)
+        
+      ) `);
+  } catch (e) {
+    console.log("Failed to create slack_posts table", e);
+  }
 };
 
 module.exports = {
