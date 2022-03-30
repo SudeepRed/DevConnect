@@ -11,14 +11,58 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
 const slackApp = new App({
-  token: process.env.SLACK_BOT_TOKEN,
+  // token: process.env.SLACK_BOT_TOKEN,
+  clientId: process.env.SLACK_CLIENT_ID,
+  clientSecret: process.env.SLACK_CLIENT_SECRET,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
-  socketMode: true,
-  appToken: process.env.SLACK_APP_TOKEN,
+  stateSecret: "aksjdhakjsdhkajd",
+  // socketMode: true,
+  // appToken: process.env.SLACK_APP_TOKEN,
+  scopes: ["chat:write", "channels:history"],
+  installerOptions: {
+    stateVerification: false,
+  },
+  installationStore: {
+    storeInstallation: async (installation) => {
+      if (installation.team !== undefined) {
+        try {
+          console.log("DONE");
+          return await DBquery.setInstallation(installation.team, installation);
+        } catch (error) {
+          console.log(error);
+        }
+
+        return;
+      }
+      throw new Error("Failed saving installation data to installationStore");
+    },
+    fetchInstallation: async (installQuery) => {
+      if (installQuery.teamId !== undefined) {
+        return await DBquery.getInstallation(installQuery.teamId);
+      }
+      // throw new Error("Failed fetching installation");
+    },
+    deleteInstallation: async (installQuery) => {
+      if (installQuery.teamId !== undefined) {
+        return await DBquery.deleteInstallation(installation.teamId);
+      }
+      throw new Error("Failed to delete installation");
+    },
+  },
 });
 
-slackApp.message("", async ({ message, say }) => {
-  await slackFunctions.messageResponce(message, slackApp);
+slackApp.message("", async ({ message, say, ack, client }) => {
+  //Ignore thread bot reply
+  if (!message.hasOwnProperty("bot_profile")) {
+   await client.chat.postMessage({
+      token: process.env.SLACK_BOT_TOKEN,
+      channel: message.channel,
+      thread_ts: message.ts,
+      blocks: await slackFunctions.messageResponce(message),
+      text: message.text,
+    });
+  }
+  return;
 });
 
 (async () => {
@@ -68,6 +112,20 @@ slackApp.message("", async ({ message, say }) => {
     "/auth/github",
     passport.authenticate("github", { session: false })
   );
+  // expressApp.get("/auth/slack/redirect", async (req, res) => {
+  //   console.log(req);
+  //   const code = req.query.code;
+  //   // res.send("redirecting");
+  //   console.log(code)
+  //   if (code) {
+  //     const token = await slackApp.client.oauth.access({
+  //       client_id: process.env.SLACK_CLIENT_ID,
+  //       client_secret: process.env.SLACK_CLIENT_SECRET,
+  //       code: code,
+  //       redirect_uri: "https://eab6-2405-201-4005-898b-517b-a724-47cd-31b1.ngrok.io/auth/slack/redirect"
+  //     });
+  //   }
+  // });
   expressApp.get("/me", async (req, res) => {
     // Bearer 120jdklowqjed021901
     const authHeader = req.headers.authorization;

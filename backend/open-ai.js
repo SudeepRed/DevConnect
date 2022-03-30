@@ -37,7 +37,8 @@ const addTitle = async (message) => {
     t = output.split("\n");
     output = t[t.length - 1];
   }
-  return output.replaceAll('"', "");
+  output = output.replaceAll('"', "");
+  return output;
 };
 
 module.exports = {

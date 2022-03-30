@@ -3,6 +3,7 @@ const getFeatureBlock = (outputTitle) => {
   const blocks = [
     {
       type: "header",
+      block_id: "feature",
       text: {
         type: "plain_text",
         text: "Feature Request :pencil2: ",
@@ -54,6 +55,7 @@ const getBugBlock = (outputTitle,priority) => {
   const blocks = [
     {
       type: "header",
+      block_id: "bug",
       text: {
         type: "plain_text",
         text: "Bug Reported:ladybug:",
