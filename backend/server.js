@@ -85,7 +85,7 @@ slackApp.message("", async ({ message, say, ack, client }) => {
         callbackURL: "http://localhost:3002/auth/github/callback",
       },
       async function (accessToken, refreshToken, profile, cb) {
-        console.log(profile);
+        // console.log(profile);
         let res = await DBquery.findUserExists(profile.id);
         cb(null, {
           accessToken: jwt.sign(
@@ -112,20 +112,7 @@ slackApp.message("", async ({ message, say, ack, client }) => {
     "/auth/github",
     passport.authenticate("github", { session: false })
   );
-  // expressApp.get("/auth/slack/redirect", async (req, res) => {
-  //   console.log(req);
-  //   const code = req.query.code;
-  //   // res.send("redirecting");
-  //   console.log(code)
-  //   if (code) {
-  //     const token = await slackApp.client.oauth.access({
-  //       client_id: process.env.SLACK_CLIENT_ID,
-  //       client_secret: process.env.SLACK_CLIENT_SECRET,
-  //       code: code,
-  //       redirect_uri: "https://eab6-2405-201-4005-898b-517b-a724-47cd-31b1.ngrok.io/auth/slack/redirect"
-  //     });
-  //   }
-  // });
+
   expressApp.get("/me", async (req, res) => {
     // Bearer 120jdklowqjed021901
     const authHeader = req.headers.authorization;
@@ -165,6 +152,7 @@ slackApp.message("", async ({ message, say, ack, client }) => {
     "/auth/github/callback",
     passport.authenticate("github", { session: false }),
     function (req, res) {
+      // res.send("redirecting");
       res.redirect(`http://localhost:54321/auth/${req.user.accessToken}`);
     }
   );

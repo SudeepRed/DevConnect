@@ -30,7 +30,7 @@ const findUserExists = async (id) => {
   try {
     let res = await client.query(`SELECT * FROM user_auth WHERE id = $1`, [id]);
     res = res.rows.length;
-    console.log(res);
+    console.log(res, "HERE");
     if (res > 0) return true;
     else return false;
   } catch (e) {
@@ -52,24 +52,26 @@ const findUser = async (id) => {
 };
 const addUserAuth = async (id, profile) => {
   try {
-    await client.query(`INSERT INTO user_auth (id, profile) VALUES ($1, $2)`, [
-      id,
-      profile,
-    ]);
-    return true;
+    console.log("HERE");
+    const res = await client.query(
+      `INSERT INTO user_auth (id, email, profile) VALUES ($1, $2, $3) ON CONFLICT (id)
+    DO UPDATE SET email = $2 , profile = $3`,
+      [id, profile.emails[0].value, profile]
+    );
   } catch (e) {
-    return false;
+    console.log(e, "ERROR in inserting to user_auth");
   }
+  return true;
 };
 const updateUserAuth = async (id, profile) => {
   try {
-    await client.query(`UPDATE user_auth SET profile=$2 WHERE id=$1`, [
-      id,
-      profile,
-    ]);
-    return true;
+    console.log("UPDATE");
+    const res = await client.query(
+      `UPDATE user_auth SET profile=$2, email=$3 WHERE id=$1`,
+      [id, profile, profile.emails[0].value]
+    );
   } catch (e) {
-    return false;
+    console.log(e, "ERROR in updating user_auth");
   }
 };
 module.exports = {
