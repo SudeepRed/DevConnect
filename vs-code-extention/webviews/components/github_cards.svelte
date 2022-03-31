@@ -38,7 +38,7 @@
       {/if}
       <div class="logo">
         <img
-          src="https://cdn.bfldr.com/5H442O3W/at/pnlpsg-beh8pk-f8ii41/appIcon_Android.png?auto=webp&format=png"
+          src={w.sender_avatar}
           alt="oops"
         />
       </div>
@@ -69,7 +69,7 @@
 
       {#if expandedInfo === w.ts}
         <div class="expanded">
-          <!-- <div>Posted by: {w.userid}</div> -->
+          <div>Posted by: {w.sender}</div>
           <!-- <div>Channel: {w.channelid}</div> -->
           <div>{w.message}</div>
           <!-- <a href={w.message_link}>Go to there!</a> -->
@@ -77,7 +77,7 @@
       {/if}
       <div class="logo">
         <img
-          src="https://cdn.bfldr.com/5H442O3W/at/pnlpsg-beh8pk-f8ii41/appIcon_Android.png?auto=webp&format=png"
+          src={w.sender_avatar}
           alt="oops"
         />
       </div>
@@ -118,7 +118,7 @@
       {/if}
       <div class="logo">
         <img
-          src="https://cdn.bfldr.com/5H442O3W/at/pnlpsg-beh8pk-f8ii41/appIcon_Android.png?auto=webp&format=png"
+          src={w.sender_avatar}
           alt="oops"
         />
       </div>
@@ -180,7 +180,7 @@
     margin-left: auto;
   }
   .icon:hover {
-    background-color: #6050e3ff;
+    background-color: rgb(52, 42, 126);
     transition: 0.2s ease-out;
     color: white;
   }

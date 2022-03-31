@@ -10,6 +10,8 @@
     title: any;
     ts: any;
     userid: any;
+    avatar: any;
+    name: any;
   }[];
   let expandedInfo = 0;
   let color = "";
@@ -28,15 +30,15 @@
 
       {#if expandedInfo === w.ts}
         <div class="expanded">
-          <div>Posted by: {w.userid}</div>
-          <div>Channel: {w.channelid}</div>
+          <div>Posted by: {w.name}</div>
+          <!-- <div>Channel: {w.channelid}</div> -->
           <div>{w.message}</div>
           <a href={w.message_link}>Go to there!</a>
         </div>
       {/if}
       <div class="logo">
         <img
-          src="https://cdn.bfldr.com/5H442O3W/at/pnlpsg-beh8pk-f8ii41/appIcon_Android.png?auto=webp&format=png"
+          src={w.avatar}
           alt="oops"
         />
       </div>
@@ -67,7 +69,7 @@
 
       {#if expandedInfo === w.ts}
         <div class="expanded">
-          <div>Posted by: {w.userid}</div>
+          <div>Posted by: {w.name}</div>
           <div>Channel: {w.channelid}</div>
           <div>{w.message}</div>
           <a href={w.message_link}>Go to there!</a>
@@ -75,12 +77,12 @@
       {/if}
       <div class="logo">
         <img
-          src="https://cdn.bfldr.com/5H442O3W/at/pnlpsg-beh8pk-f8ii41/appIcon_Android.png?auto=webp&format=png"
+          src={w.avatar}
           alt="oops"
         />
       </div>
     </div>
-    {:else if type=="all"}
+  {:else if type == "all"}
     <div
       class="icon"
       style="background-color:{color}"
@@ -88,17 +90,17 @@
         expandedInfo = w.ts;
       }}
     >
-      {#if w.priority == "Low" && w.category=="bug"}
+      {#if w.priority == "Low" && w.category == "bug"}
         <div class="low"><div>🐛{w.title}</div></div>
-      {:else if w.priority == "Medium" && w.category=="bug"}
+      {:else if w.priority == "Medium" && w.category == "bug"}
         <div class="med">
           <div>🐛{w.title}</div>
         </div>
-      {:else if w.priority == "High" && w.category=="bug"}
+      {:else if w.priority == "High" && w.category == "bug"}
         <div class="high">
           <div>🐛{w.title}</div>
         </div>
-      {:else if w.priority == "Urgent" && w.category=="bug"}
+      {:else if w.priority == "Urgent" && w.category == "bug"}
         <div class="urgent"><div>🐛{w.title}</div></div>
       {:else if w.category == "bug"}
         <div>🐛{w.title}</div>
@@ -108,17 +110,14 @@
 
       {#if expandedInfo === w.ts}
         <div class="expanded">
-          <div>Posted by: {w.userid}</div>
+          <div>Posted by: {w.name}</div>
           <div>Channel: {w.channelid}</div>
           <div>{w.message}</div>
           <a href={w.message_link}>Go to there!</a>
         </div>
       {/if}
       <div class="logo">
-        <img
-          src="https://cdn.bfldr.com/5H442O3W/at/pnlpsg-beh8pk-f8ii41/appIcon_Android.png?auto=webp&format=png"
-          alt="oops"
-        />
+        <img src={w.avatar} alt="oops" />
       </div>
     </div>
   {/if}
@@ -178,7 +177,7 @@
     margin-left: auto;
   }
   .icon:hover {
-    background-color: #6050e3ff;
+    background-color: rgb(52, 42, 126);
     transition: 0.2s ease-out;
     color: white;
   }

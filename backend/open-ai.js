@@ -40,8 +40,34 @@ const addTitle = async (message) => {
   output = output.replaceAll('"', "");
   return output;
 };
-
+const groupThings = async (message) => {
+  message = JSON.stringify(message)
+  message = (message.replace(/[\[\]']+/g,''))
+  message = message.replaceAll(',"', '\n "')
+  message = message.replaceAll('"','')
+  message = message.trim()
+  console.log(message)
+  const response = await openai.createCompletion("text-davinci-002", {
+    prompt:
+      "Group the following related messages together, assign a title to the grouped category, break down the bugs into smaller bugs and group them with a relevant title. Return the grouped tasks as a JSON where the key is the title and the values are the related tasks.\n\n" +
+      message,
+    temperature: 0,
+    max_tokens: 1300,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+  });
+  let output = response.data.choices[0].text.replace(/(\r\n|\n|\r)/gm, "");
+  console.log(output);
+  try {
+    output = JSON.parse(output);
+  } catch (e) {
+    output = null;
+  }
+  return output;
+};
 module.exports = {
   classifyChat,
   addTitle,
+  groupThings,
 };

@@ -94,11 +94,13 @@ const insertSlackPost = async (slack_post) => {
       title,
       priority,
       message_link,
+      name,
+      avatar
     } = slack_post;
     console.log(slack_post);
     console.log("Slack POST INSERT");
     const res = await client.query(
-      `INSERT INTO slack_posts (teamid, message, userid, ts, channelid, category, title, priority, message_link) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      `INSERT INTO slack_posts (teamid, message, userid, ts, channelid, category, title, priority, message_link, name, avatar) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
       [
         teamid,
         message,
@@ -109,6 +111,8 @@ const insertSlackPost = async (slack_post) => {
         title,
         priority,
         message_link,
+        name,
+        avatar
       ]
     );
   } catch (e) {
@@ -185,22 +189,22 @@ const addGithubIssue = async (data) => {
 };
 const getUserRepos = async (owner) => {
   try {
-    const data=await client.query(
+    const data = await client.query(
       `SELECT DISTINCT(repo) from github_issues where owner=$1`,
       [owner]
     );
-      return data.rows
+    return data.rows;
   } catch (e) {
     console.log(e);
   }
 };
-const getInfoGH = async (owner,repo) => {
+const getInfoGH = async (owner, repo) => {
   try {
-    const data=await client.query(
+    const data = await client.query(
       `SELECT * from github_issues where owner=$1 and repo=$2`,
-      [owner,repo]
+      [owner, repo]
     );
-      return data.rows
+    return data.rows;
   } catch (e) {
     console.log(e);
   }
@@ -218,5 +222,5 @@ module.exports = {
   getInfo,
   addGithubIssue,
   getUserRepos,
-  getInfoGH
+  getInfoGH,
 };

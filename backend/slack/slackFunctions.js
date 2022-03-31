@@ -2,7 +2,7 @@
 const OpenAI = require("../open-ai");
 const slackBlocks = require("./slackBlocks");
 const DBquery = require("./../db/queries");
-const messageResponce = async (message, link) => {
+const messageResponce = async (message, link, user_info) => {
   let text = message.text;
   if (text.length < 10) {
     return null;
@@ -14,6 +14,7 @@ const messageResponce = async (message, link) => {
   } else if (classifiedCategory.includes("bug")) {
     const messageTitle = await OpenAI.addTitle(text);
     let priority = getPriority(classifiedCategory);
+
     const slack_post = {
       teamid: message.team,
       message: message.text,
@@ -24,6 +25,8 @@ const messageResponce = async (message, link) => {
       title: messageTitle,
       priority: priority,
       message_link: link,
+      avatar: user_info.user.profile.image_original,
+      name: user_info.user.name,
     };
     await DBquery.insertSlackPost(slack_post);
     let blocks = slackBlocks.getBugBlock(messageTitle, priority);
@@ -41,6 +44,8 @@ const messageResponce = async (message, link) => {
       title: outputTitle,
       priority: "Low",
       message_link: link,
+      avatar: user_info.user.profile.image_original,
+      name: user_info.user.name,
     };
     await DBquery.insertSlackPost(slack_post);
     return blocks;
@@ -80,5 +85,5 @@ const postMessage = async (app, message, blocks) => {
 
 module.exports = {
   messageResponce,
-  getPriority
+  getPriority,
 };

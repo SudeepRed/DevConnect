@@ -15,6 +15,8 @@
     ts: any;
     userid: any;
     priority_id: any;
+    avatar: any;
+    name:any;
   }[] = [];
   let github_info: {
     id: any;
@@ -28,7 +30,10 @@
     ts: any;
     priority_id: any;
     category: any;
+    
   }[] = [];
+  let groupedData = "";
+  let messages: string[] =[];
   onMount(async () => {
     window.addEventListener("message", async (event) => {
       const message = event.data;
@@ -51,10 +56,23 @@
 
             res.data.forEach((d: any) => {
               slack_info.push(d);
+              messages.push(d.message);
             });
             slack_info.sort(function (a, b) {
-              return a.priority_id - b.priority_id;
+              return b.priority_id -a.priority_id ;
             });
+            const gt = await fetch(`${apiBaseUrl}/groupThings`, {
+              method: "POST",
+              body: JSON.stringify({
+                text: messages,
+              }),
+              headers: {
+                "content-type": "application/json",
+                // authorization: `Bearer ${accessToken}`,
+              },
+            });
+            groupedData = await gt.json()
+            console.log(groupedData)
             console.log(slack_info[0].message);
             loading = false;
           } else {
@@ -75,10 +93,23 @@
 
             res.data.forEach((d: any) => {
               github_info.push(d);
+              messages.push(d.message)
             });
             github_info.sort(function (a, b) {
-              return a.priority_id - b.priority_id;
+              return -(a.priority_id - b.priority_id);
             });
+            const gt = await fetch(`${apiBaseUrl}/groupThings`, {
+              method: "POST",
+              body: JSON.stringify({
+                text: messages,
+              }),
+              headers: {
+                "content-type": "application/json",
+                // authorization: `Bearer ${accessToken}`,
+              },
+            });
+            groupedData = await gt.json()
+            console.log(groupedData)
             // console.log(slack_info[0].message);
             loading = false;
           }
