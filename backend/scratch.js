@@ -1,8 +1,54 @@
-
 message = {
-    text: 'Hello',
-    user: 'U037UCK98F2',
-    ts: '1648640414.163419',
-    team: 'T0377063THA',
-    channel: 'C037UCKAVL0'
-  }
+  text: "Hello",
+  user: "U037UCK98F2",
+  ts: "1648640414.163419",
+  team: "T0377063THA",
+  channel: "C037UCKAVL0",
+};
+v = {
+  id: "54713483",
+  displayName: "Sudeep Reddy",
+  username: "SudeepRed",
+  profileUrl: "https://github.com/SudeepRed",
+  emails: [{ value: "sudeep19313@iiitd.ac.in" }],
+  photos: [{ value: "https://avatars.githubusercontent.com/u/54713483?v=4" }],
+  provider: "github",
+  _raw: '{"login":"SudeepRed","id":54713483,"node_id":"MDQ6VXNlcjU0NzEzNDgz","avatar_url":"https://avatars.githubusercontent.com/u/54713483?v=4","gravatar_id":"","url":"https://api.github.com/users/SudeepRed","html_url":"https://github.com/SudeepRed","followers_url":"https://api.github.com/users/SudeepRed/followers","following_url":"https://api.github.com/users/SudeepRed/following{/other_user}","gists_url":"https://api.github.com/users/SudeepRed/gists{/gist_id}","starred_url":"https://api.github.com/users/SudeepRed/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/SudeepRed/subscriptions","organizations_url":"https://api.github.com/users/SudeepRed/orgs","repos_url":"https://api.github.com/users/SudeepRed/repos","events_url":"https://api.github.com/users/SudeepRed/events{/privacy}","received_events_url":"https://api.github.com/users/SudeepRed/received_events","type":"User","site_admin":false,"name":"Sudeep Reddy","company":null,"blog":"","location":null,"email":"sudeep19313@iiitd.ac.in","hireable":null,"bio":null,"twitter_username":null,"public_repos":18,"public_gists":0,"followers":4,"following":7,"created_at":"2019-08-30T13:29:28Z","updated_at":"2022-03-18T16:55:26Z"}',
+  _json: {
+    login: "SudeepRed",
+    id: 54713483,
+    node_id: "MDQ6VXNlcjU0NzEzNDgz",
+    avatar_url: "https://avatars.githubusercontent.com/u/54713483?v=4",
+    gravatar_id: "",
+    url: "https://api.github.com/users/SudeepRed",
+    html_url: "https://github.com/SudeepRed",
+    followers_url: "https://api.github.com/users/SudeepRed/followers",
+    following_url:
+      "https://api.github.com/users/SudeepRed/following{/other_user}",
+    gists_url: "https://api.github.com/users/SudeepRed/gists{/gist_id}",
+    starred_url:
+      "https://api.github.com/users/SudeepRed/starred{/owner}{/repo}",
+    subscriptions_url: "https://api.github.com/users/SudeepRed/subscriptions",
+    organizations_url: "https://api.github.com/users/SudeepRed/orgs",
+    repos_url: "https://api.github.com/users/SudeepRed/repos",
+    events_url: "https://api.github.com/users/SudeepRed/events{/privacy}",
+    received_events_url:
+      "https://api.github.com/users/SudeepRed/received_events",
+    type: "User",
+    site_admin: false,
+    name: "Sudeep Reddy",
+    company: null,
+    blog: "",
+    location: null,
+    email: "sudeep19313@iiitd.ac.in",
+    hireable: null,
+    bio: null,
+    twitter_username: null,
+    public_repos: 18,
+    public_gists: 0,
+    followers: 4,
+    following: 7,
+    created_at: "2019-08-30T13:29:28Z",
+    updated_at: "2022-03-18T16:55:26Z",
+  },
+};

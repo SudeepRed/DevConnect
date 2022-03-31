@@ -37,7 +37,7 @@ const createdb = async () => {
       category varchar(25) NOT NULL,
       title text NOT NULL,
       priority varchar(25) NOT NULL,
-      message_link varchar(500),
+      message_link varchar(500)
       
     )`);
   } catch (e) {
@@ -60,7 +60,7 @@ const createdb = async () => {
     console.log("Failed to create slack_posts table", e);
   }
   try {
-    await client.query(`ALTER TABLE slack_posts ADD COLUMN priority_id int GENERATED ALWAYS AS
+    await client.query(`ALTER TABLE slack_posts ADD COLUMN IF NOT EXISTS priority_id  int GENERATED ALWAYS AS
     (case when priority = ('High')
           then 3
    when priority = ('Urgent')
@@ -71,6 +71,27 @@ const createdb = async () => {
    then 0
           else 1
      end ) STORED; `);
+  } catch (e) {
+    console.log("Failed to Alter slack_posts table", e);
+  }
+  try {
+    await client.query(
+      ` ALTER TABLE slack_posts ADD COLUMN IF NOT EXISTS channel_name varchar(100) DEFAULT null;`
+    );
+  } catch (e) {
+    console.log("Failed to Alter slack_posts table", e);
+  }
+  try {
+    await client.query(
+      ` ALTER TABLE slack_posts ADD COLUMN IF NOT EXISTS user_avatar varchar(1000) DEFAULT null;`
+    );
+  } catch (e) {
+    console.log("Failed to Alter slack_posts table", e);
+  }
+  try {
+    await client.query(
+      ` ALTER TABLE slack_posts ADD COLUMN IF NOT EXISTS user_name varchar(100) DEFAULT null;`
+    );
   } catch (e) {
     console.log("Failed to Alter slack_posts table", e);
   }
