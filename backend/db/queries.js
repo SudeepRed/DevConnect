@@ -150,12 +150,39 @@ const getUserWorkspaces = async (email) => {
     is_verified: false,
   };
 };
-const getInfo = async (teamid)=>{
-  try{
-    let data = await client.query(`SELECT * FROM slack_posts WHERE teamid = $1`,[teamid]);
-    return data.rows
-  }catch(e){console.log(e)}
-}
+const getInfo = async (teamid) => {
+  try {
+    let data = await client.query(
+      `SELECT * FROM slack_posts WHERE teamid = $1`,
+      [teamid]
+    );
+    return data.rows;
+  } catch (e) {
+    console.log(e);
+  }
+};
+const addGithubIssue = async (data) => {
+  try {
+    await client.query(
+      `INSERT INTO github_issues (
+      id,owner,message,priority,sender, sender_avatar,assigned_user,repo,ts, category) VALUES ($1, $2, $3, $4, $5, $6, $7, $8,$9, $10)`,
+      [
+        data.id,
+        data.owner,
+        data.message,
+        data.priority,
+        data.sender,
+        data.sender_avatar,
+        data.assigned,
+        data.repo,
+        data.ts,
+        data.category,
+      ]
+    );
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = {
   findUserExists,
@@ -167,4 +194,5 @@ module.exports = {
   insertSlackPost,
   getUserWorkspaces,
   getInfo,
+  addGithubIssue,
 };

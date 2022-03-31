@@ -95,6 +95,23 @@ const createdb = async () => {
   } catch (e) {
     console.log("Failed to Alter slack_posts table", e);
   }
+  try {
+    await client.query(
+      ` CREATE TABLE IF NOT EXISTS github_issues (
+        id int PRIMARY KEY,
+        owner varchar(100) NOT NULL,
+        message text,
+        priority varchar(100) DEFAULT 'Low/Med',
+        sender text,
+        sender_avatar varchar(1000),
+        assigned_user varchar(1000),
+        repo varchar(500),
+        ts NUMERIC
+      )`
+    );
+  } catch (e) {
+    console.log("Failed to Alter slack_posts table", e);
+  }
 };
 
 module.exports = {

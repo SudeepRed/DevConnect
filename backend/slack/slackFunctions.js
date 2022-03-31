@@ -80,4 +80,5 @@ const postMessage = async (app, message, blocks) => {
 
 module.exports = {
   messageResponce,
+  getPriority
 };
