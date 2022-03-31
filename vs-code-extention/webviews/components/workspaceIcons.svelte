@@ -8,7 +8,7 @@
   <div class="icon">
     <!-- svelte-ignore missing-declaration -->
     <button
-      class="image"
+      class="image button"
       on:click={() => {
         tsvscode.postMessage({
           type: "dashboard",

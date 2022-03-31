@@ -10,24 +10,101 @@
     ts: any;
     userid: any;
   }[];
+  let expandedInfo = 0;
+  let color = "";
 </script>
 
 {#each info as w}
-  <div class="icon">
-    {w.message}
+  <div
+    class="icon"
+    style="background-color:{color}"
+    on:click={() => {
+      expandedInfo = w.ts;
+    }}
+  >
+    {#if w.priority == "Low"}
+      <div class="low"><div>🐛{w.title}</div></div>
+    {:else if w.priority == "Medium"}
+      <div class="med">
+        <div>🐛{w.title}</div>
+      </div>
+    {:else if w.priority == "High"}
+      <div class="high">
+        <div>🐛 {w.title}</div>
+      </div>
+    {:else if w.priority == "Urgent"}
+      <div class="urgent"><div>🐛 {w.title}</div></div>
+    {:else}
+      <div>🐛 {w.title}</div>
+    {/if}
+
+    {#if expandedInfo === w.ts}
+      <div class="expanded">
+        <div>Posted by: {w.userid}</div>
+        <div>Channel: {w.channelid}</div>
+        <div>{w.message}</div>
+        <a href={w.message_link}>Go to there!</a>
+      </div>
+    {/if}
+    <div class="logo">
+      <img
+        src="https://cdn.bfldr.com/5H442O3W/at/pnlpsg-beh8pk-f8ii41/appIcon_Android.png?auto=webp&format=png"
+        alt="oops"
+      />
+    </div>
   </div>
-  <div>{w.priority}</div>
 {/each}
 
 <style>
+  .low {
+    min-height: 20px;
+    border-bottom: 3px dashed rgb(151, 196, 47);
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  .med {
+    min-height: 20px;
+    border-bottom: 3px dashed rgb(252, 255, 47);
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  .high {
+    min-height: 20px;
+    border-bottom: 3px dashed rgb(255, 153, 0);
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  .urgent {
+    min-height: 20px;
+    border-bottom: 3px dashed rgb(255, 83, 71);
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  img {
+    width: 25px;
+    height: 25px;
+  }
+  .expanded {
+    padding: 5px;
+    /* margin-top: 5px;
+    margin-bottom: 5px; */
+  }
   .icon {
-    width: 70px;
-    height: 70px;
+    background-color: rgb(36, 36, 36);
+
+    font-size: 14px;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
   }
-
-  
+  .icon div:last-child {
+    margin-left: auto;
+  }
+  .icon:hover {
+    background-color: #6050e3ff;
+    transition: 0.2s ease-out;
+    color: white;
+  }
 </style>

@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Cards from "./cards.svelte";
+
+  import "app.css";
   let loading = true;
   let info: {
     category: any;
@@ -12,6 +14,7 @@
     title: any;
     ts: any;
     userid: any;
+    priority_id: any;
   }[] = [];
   onMount(async () => {
     window.addEventListener("message", async (event) => {
@@ -31,8 +34,12 @@
           });
           console.log("HEllo");
           const res = await response.json();
+
           res.data.forEach((d: any) => {
             info.push(d);
+          });
+          info.sort(function (a, b) {
+            return a.priority_id - b.priority_id;
           });
           console.log(info[0].message);
           loading = false;
@@ -40,10 +47,18 @@
     });
     tsvscode.postMessage({ type: "dashboard", value: " " });
   });
+
+  let active = "Home";
 </script>
 
 <!-- <div>Hello</div> -->
-
+<div class="tabbar">
+  <div style="margin-top: 1em;">
+    {#each ["All", "Bugs", "Feature Requests"] as tab}
+      <button class="tab" on:click={() => (active = tab)}>{tab}</button>
+    {/each}
+  </div>
+</div>
 {#if loading}
   <div>Loading...</div>
 {:else if info.length > 0}
@@ -52,12 +67,26 @@
   <div>No user logged in</div>
 {/if}
 
-<!-- category: "bug"
-channelid: "C037UCKAVL0"
-message: "payment options is not loading"
-message_link: "https://vschatworkspace.slack.com/archives/C037UCKAVL0/p1648676460797859"
-priority: "High"
-teamid: "T0377063THA"
-title: "Payment Options Not Loading"
-ts: "1648676460.797859"
-userid: "U037UCK98F2" -->
+<style>
+  .tabbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .tab {
+    font-family: "Montserrat", sans-serif;
+    background-color: #202022;
+    border-style: none;
+    color: white;
+    height: 45px;
+    border-bottom: 3px solid #202022;
+    /* border-style: solid; */
+  }
+  .tab:hover {
+    border-bottom: 3px solid #6050e3ff;
+    /* border-style: solid; */
+    color: #6050e3ff;
+  }
+</style>

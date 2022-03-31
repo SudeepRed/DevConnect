@@ -16,7 +16,7 @@ body {
   color: var(--vscode-foreground);
   font-size: var(--vscode-font-size);
   font-weight: var(--vscode-font-weight);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background-color: #202022;
 }
 
@@ -46,31 +46,31 @@ a:active {
 
 code {
   font-size: var(--vscode-editor-font-size);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
-button {
+.button {
   border: none;
   padding: var(--input-padding-vertical) var(--input-padding-horizontal);
   width: 100px;
   text-align: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: var(--vscode-button-foreground);
   background: var(--majorelle-blue);
   border-radius: 10px;
 }
 
-button:hover {
+.button:hover {
   cursor: pointer;
   background: var(--vscode-button-hoverBackground);
 }
 
-button.secondary {
+.button.secondary {
   color: var(--vscode-button-secondaryForeground);
   background: var(--vscode-button-secondaryBackground);
 }
 
-button.secondary:hover {
+.button.secondary:hover {
   background: var(--vscode-button-secondaryHoverBackground);
 }
 
@@ -79,7 +79,7 @@ textarea {
   display: block;
   width: 100%;
   border: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   padding: var(--input-padding-vertical) var(--input-padding-horizontal);
   color: var(--vscode-input-foreground);
   outline-color: var(--vscode-input-border);

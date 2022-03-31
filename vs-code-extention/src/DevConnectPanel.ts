@@ -120,7 +120,6 @@ export class DevConnectPanel {
           });
           break;
         }
-        
       }
     });
   }
@@ -149,6 +148,13 @@ export class DevConnectPanel {
     const cssUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "out/compiled", "Panel.css")
     );
+    const codiconsUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this._extensionUri,
+        "node_modules/@vscode/codicons/dist",
+        "codicon.css"
+      )
+    );
 
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
@@ -167,7 +173,12 @@ export class DevConnectPanel {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link href="${stylesResetUri}" rel="stylesheet">
 				<link href="${stylesMainUri}" rel="stylesheet">
-        <link href="" rel="stylesheet">
+        <link href="${cssUri}" rel="stylesheet">
+        <link href="${codiconsUri}" rel="stylesheet" />
+        <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/svelte-material-ui@6.0.0/bare.min.css"
+/>
         <script nonce="${nonce}">
         const tsvscode = acquireVsCodeApi();
         const apiBaseUrl = ${JSON.stringify(apiBaseUrl)};

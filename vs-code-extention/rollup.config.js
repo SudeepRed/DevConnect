@@ -4,6 +4,7 @@ import typescript from "rollup-plugin-typescript2";
 import commonjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
+import smelte from "smelte/rollup-plugin-smelte";
 import css from "rollup-plugin-import-css";
 import path from "path";
 import fs from "fs";
@@ -17,7 +18,7 @@ export default fs
     const name = input.split(".")[0];
     return {
       input: "webviews/pages/" + input,
-      
+
       output: {
         sourcemap: true,
         format: "iife",
@@ -35,6 +36,7 @@ export default fs
           },
           preprocess: sveltePreprocess(),
         }),
+        
         css(),
 
         // If you have external dependencies installed from
@@ -45,7 +47,7 @@ export default fs
         resolve({
           browser: true,
           dedupe: ["svelte"],
-          extensions : ['.js', '.ts', '.svelte','.css']
+          extensions: [".js", ".ts", ".svelte", ".css"],
         }),
         commonjs(),
         typescript({
@@ -54,16 +56,7 @@ export default fs
           inlineSources: !production,
         }),
 
-        // In dev mode, call `npm run start` once
-        // the bundle has been generated
-        // !production && serve(),
-
-        // Watch the `public` directory and refresh the
-        // browser on changes when not in production
-        // !production && livereload("public"),
-
-        // If we're building for production (npm run build
-        // instead of npm run dev), minify
+       
         production && terser(),
       ],
       watch: {

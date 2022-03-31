@@ -44,12 +44,12 @@
   <div>&nbsp;</div>
   <WorkspaceIcons {workspaces} />
   <div>&nbsp;</div>
-  <button on:click={async () => {}}>Add to slack</button>
+  <button class="button" on:click={async () => {}}>Add to slack</button>
 {:else}
   <div>No user logged in</div>
 {/if}
 <!-- svelte-ignore missing-declaration -->
-<button
+<button class="button"
   on:click={() => {
     // tsvscode.commands.executeCommand("devconnect.dashboard");
     tsvscode.postMessage({

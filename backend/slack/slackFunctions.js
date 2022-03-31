@@ -29,7 +29,7 @@ const messageResponce = async (message, link) => {
     let blocks = slackBlocks.getBugBlock(messageTitle, priority);
     return blocks;
   } else if (classifiedCategory.includes("feature")) {
-    const outputTitle = await addTitle(text);
+    const outputTitle = await OpenAI.addTitle(text);
     let blocks = slackBlocks.getFeatureBlock(outputTitle);
     const slack_post = {
       teamid: message.team,
@@ -38,8 +38,8 @@ const messageResponce = async (message, link) => {
       ts: message.ts,
       channelid: message.channel,
       category: "feature",
-      title: messageTitle,
-      priority: priority,
+      title: outputTitle,
+      priority: "Low",
       message_link: link,
     };
     await DBquery.insertSlackPost(slack_post);
