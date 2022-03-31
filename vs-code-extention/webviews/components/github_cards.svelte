@@ -15,10 +15,11 @@
   }[];
   let expandedInfo = 0;
   let color = "";
+  let hide: any[] = [];
 </script>
 
 {#each info as w}
-  {#if type == "feature" && w.category == type}
+  {#if type == "feature" && w.category == type && !hide.includes(w.ts) }
     <div
       class="icon"
       style="background-color:{color}"
@@ -82,7 +83,9 @@
         />
       </div>
     </div>
-  {:else if type == "all"}
+  {:else if type == "all" }
+
+  {#if hide.length<=0}
     <div
       class="icon"
       style="background-color:{color}"
@@ -117,16 +120,33 @@
         </div>
       {/if}
       <div class="logo">
+        <button class="button del" on:click={()=>{hide.push(w.ts); console.log(!hide.includes(w.ts))}}>Delete</button>
         <img
           src={w.sender_avatar}
           alt="oops"
         />
+        
       </div>
     </div>
+    {/if}
   {/if}
 {/each}
 
 <style>
+  .del{
+    /* margin-top: -5px;
+     */
+     padding: 0;
+     margin-right:20px ;
+     z-index: 10;
+  }
+  .logo{
+    padding: 10px;
+   
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
   .feature {
     min-height: 20px;
     border-bottom: 3px dashed #6050e3ff;

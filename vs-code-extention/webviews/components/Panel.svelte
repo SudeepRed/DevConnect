@@ -59,7 +59,7 @@
               messages.push(d.message);
             });
             slack_info.sort(function (a, b) {
-              return b.priority_id -a.priority_id ;
+              return b.ts -a.ts ;
             });
             const gt = await fetch(`${apiBaseUrl}/groupThings`, {
               method: "POST",
@@ -96,7 +96,7 @@
               messages.push(d.message)
             });
             github_info.sort(function (a, b) {
-              return -(a.priority_id - b.priority_id);
+              return -(a.ts - b.ts);
             });
             const gt = await fetch(`${apiBaseUrl}/groupThings`, {
               method: "POST",

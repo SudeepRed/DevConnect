@@ -15,6 +15,7 @@
   }[];
   let expandedInfo = 0;
   let color = "";
+
 </script>
 
 {#each info as w}
@@ -70,7 +71,7 @@
       {#if expandedInfo === w.ts}
         <div class="expanded">
           <div>Posted by: {w.name}</div>
-          <div>Channel: {w.channelid}</div>
+          <!-- <div>Channel: {w.channelid}</div> -->
           <div>{w.message}</div>
           <a href={w.message_link}>Go to there!</a>
         </div>
@@ -111,19 +112,38 @@
       {#if expandedInfo === w.ts}
         <div class="expanded">
           <div>Posted by: {w.name}</div>
-          <div>Channel: {w.channelid}</div>
+          <!-- <div>Channel: {w.channelid}</div> -->
           <div>{w.message}</div>
           <a href={w.message_link}>Go to there!</a>
         </div>
       {/if}
       <div class="logo">
-        <img src={w.avatar} alt="oops" />
+        <button class="button del" on:click={()=>{}}>Delete</button>
+        <img
+          src={w.avatar}
+          alt="oops"
+        />
+        
       </div>
     </div>
   {/if}
 {/each}
 
 <style>
+    .del{
+    /* margin-top: -5px;
+     */
+     padding: 0;
+     margin-right:20px ;
+     z-index: 10;
+  }
+  .logo{
+    padding: 10px;
+   
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
   .feature {
     min-height: 20px;
     border-bottom: 3px dashed #6050e3ff;
