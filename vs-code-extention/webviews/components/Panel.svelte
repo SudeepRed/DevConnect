@@ -48,21 +48,37 @@
     tsvscode.postMessage({ type: "dashboard", value: " " });
   });
 
-  let active = "Home";
+  let active = "all";
 </script>
 
 <!-- <div>Hello</div> -->
 <div class="tabbar">
   <div style="margin-top: 1em;">
     {#each ["All", "Bugs", "Feature Requests"] as tab}
-      <button class="tab" on:click={() => (active = tab)}>{tab}</button>
+      <button
+        class="tab"
+        on:click={() => {
+          if (tab == "Bugs") {
+            active = "bug";
+          } else if (tab == "Feature Requests") {
+            active = "feature";
+          } else {
+            active = "all";
+          }
+        }}>{tab}</button
+      >
     {/each}
   </div>
 </div>
 {#if loading}
   <div>Loading...</div>
 {:else if info.length > 0}
-  <Cards {info} />
+  {#if active == "bug"}<Cards {info} type={active} />
+  {:else if active == "feature"}
+    <Cards {info} type={active} />
+  {:else}
+    <Cards {info} type={active} />
+  {/if}
 {:else}
   <div>No user logged in</div>
 {/if}
