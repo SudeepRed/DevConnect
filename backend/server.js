@@ -143,8 +143,44 @@ slackApp.message("", async ({ message, say, ack, client }) => {
     "/auth/github",
     passport.authenticate("github", { session: false })
   );
+  expressApp.get("/github-repo", async (req, res) => {
+    // Bearer 120jdklowqjed021901
+    const authHeader = req.headers.authorization;
 
-  expressApp.get("/me", async (req, res) => {
+    if (!authHeader) {
+      res.send({ user: null });
+      return;
+    }
+
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      res.send({ user: null });
+      return;
+    }
+
+    let userId = "";
+
+    try {
+      const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      userId = payload.userId;
+    } catch (err) {
+      res.send({ user: null });
+      return;
+    }
+
+    if (!userId) {
+      res.send({ user: null });
+      return;
+    }
+
+    const user = await DBquery.findUser(userId);
+    const owner = user.username;
+    const data = await DBquery.getUserRepos(owner);
+
+    res.send({ repo: data });
+  });
+
+  expressApp.get("/slack-workspace", async (req, res) => {
     // Bearer 120jdklowqjed021901
     const authHeader = req.headers.authorization;
 
@@ -189,15 +225,23 @@ slackApp.message("", async ({ message, say, ack, client }) => {
       res.redirect(`http://localhost:54321/auth/${req.user.accessToken}`);
     }
   );
-  expressApp.post("/getInfo", async (req, res) => {
+  expressApp.post("/getInfo/slack", async (req, res) => {
     const { teamid } = req.body;
     console.log(req.body);
     if (teamid) {
       const data = await DBquery.getInfo(teamid);
       console.log(data);
-      return res.send({data})
-    }
-    else return res.status(200).json({ data: null });
+      return res.send({ data });
+    } else return res.status(200).json({ data: null });
+  });
+  expressApp.post("/getInfo/github", async (req, res) => {
+    const { owner, repo } = req.body;
+    console.log(req.body);
+    if (owner) {
+      const data = await DBquery.getInfoGH(owner,repo);
+      // console.log(data);
+      return res.send({ data });
+    } else return res.status(200).json({ data: null });
   });
 
   //healthcheck

@@ -183,6 +183,28 @@ const addGithubIssue = async (data) => {
     console.log(e);
   }
 };
+const getUserRepos = async (owner) => {
+  try {
+    const data=await client.query(
+      `SELECT DISTINCT(repo) from github_issues where owner=$1`,
+      [owner]
+    );
+      return data.rows
+  } catch (e) {
+    console.log(e);
+  }
+};
+const getInfoGH = async (owner,repo) => {
+  try {
+    const data=await client.query(
+      `SELECT * from github_issues where owner=$1 and repo=$2`,
+      [owner,repo]
+    );
+      return data.rows
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = {
   findUserExists,
@@ -195,4 +217,6 @@ module.exports = {
   getUserWorkspaces,
   getInfo,
   addGithubIssue,
+  getUserRepos,
+  getInfoGH
 };

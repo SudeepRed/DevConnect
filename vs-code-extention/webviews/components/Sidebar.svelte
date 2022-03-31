@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { profile } from "console";
+
+
   import { onMount } from "svelte";
   import WorkspaceIcons from "./workspaceIcons.svelte";
 
@@ -7,26 +8,42 @@
   let loading = true;
   let user: any;
   let workspaces: { name: any; id: any; icon: any }[] = [];
-
+  let repo :{name: any}[]=[]
+  let owner ="";
   onMount(async () => {
     window.addEventListener("message", async (event) => {
       const message = event.data;
       switch (message.type) {
         case "token":
           accessToken = message.value;
-          const response = await fetch(`${apiBaseUrl}/me`, {
+          const responseSlack = await fetch(`${apiBaseUrl}/slack-workspace`, {
             headers: {
               authorization: `Bearer ${accessToken}`,
             },
           });
-          const data = await response.json();
-          console.log(data);
-          user = data.userInfo;
-          data.workspaces.forEach((workspace: any) => {
+          const responseGithub = await fetch(`${apiBaseUrl}/github-repo`, {
+            headers: {
+              authorization: `Bearer ${accessToken}`,
+            },
+          });
+          const slack_workspaces = await responseSlack.json();
+          const git_repo = await responseGithub.json();
+          console.log(git_repo)
+          console.log(slack_workspaces);
+          user = slack_workspaces.userInfo;
+          
+          owner = user.username
+          console.log(owner)
+          slack_workspaces.workspaces.forEach((workspace: any) => {
             workspaces.push({
               name: workspace.teaminfo.name,
               id: workspace.teaminfo.id,
               icon: workspace.teaminfo.icon["image_102"],
+            });
+          });
+          git_repo.repo.forEach((r: any) => {
+            repo.push({
+              name: r.repo,
             });
           });
 
@@ -42,14 +59,15 @@
 {:else if user}
   <h2>Hey&#128075! {user["displayName"]}</h2>
   <div>&nbsp;</div>
-  <WorkspaceIcons {workspaces} />
+  <WorkspaceIcons {workspaces} {repo} {owner}/>
   <div>&nbsp;</div>
   <button class="button" on:click={async () => {}}>Add to slack</button>
 {:else}
   <div>No user logged in</div>
 {/if}
 <!-- svelte-ignore missing-declaration -->
-<button class="button"
+<button
+  class="button"
   on:click={() => {
     // tsvscode.commands.executeCommand("devconnect.dashboard");
     tsvscode.postMessage({

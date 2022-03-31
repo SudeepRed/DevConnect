@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Cards from "./cards.svelte";
-
+  import SlackCards from "./slack_cards.svelte";
+  import GithubCards from "./github_cards.svelte";
   import "app.css";
   let loading = true;
-  let info: {
+  let slack_info: {
     category: any;
     channelid: any;
     message: any;
@@ -16,33 +16,72 @@
     userid: any;
     priority_id: any;
   }[] = [];
+  let github_info: {
+    id: any;
+    owner: any;
+    message: any;
+    priority: any;
+    sender: any;
+    sender_avatar: any;
+    assigned_user: any;
+    repo: any;
+    ts: any;
+    priority_id: any;
+    category: any;
+  }[] = [];
   onMount(async () => {
     window.addEventListener("message", async (event) => {
       const message = event.data;
       switch (message.type) {
         case "getInfo":
           console.log("from workkkk", message.value);
-          const response = await fetch(`${apiBaseUrl}/getInfo`, {
-            method: "POST",
-            body: JSON.stringify({
-              teamid: message.value,
-            }),
-            headers: {
-              "content-type": "application/json",
-              // authorization: `Bearer ${accessToken}`,
-            },
-          });
-          console.log("HEllo");
-          const res = await response.json();
+          if (message.value[0] != "$") {
+            const response = await fetch(`${apiBaseUrl}/getInfo/slack`, {
+              method: "POST",
+              body: JSON.stringify({
+                teamid: message.value,
+              }),
+              headers: {
+                "content-type": "application/json",
+                // authorization: `Bearer ${accessToken}`,
+              },
+            });
+            console.log("HEllo");
+            const res = await response.json();
 
-          res.data.forEach((d: any) => {
-            info.push(d);
-          });
-          info.sort(function (a, b) {
-            return a.priority_id - b.priority_id;
-          });
-          console.log(info[0].message);
-          loading = false;
+            res.data.forEach((d: any) => {
+              slack_info.push(d);
+            });
+            slack_info.sort(function (a, b) {
+              return a.priority_id - b.priority_id;
+            });
+            console.log(slack_info[0].message);
+            loading = false;
+          } else {
+            console.log("hey gh");
+            const response = await fetch(`${apiBaseUrl}/getInfo/github`, {
+              method: "POST",
+              body: JSON.stringify({
+                owner: message.value.split("$")[1],
+                repo: message.value.split("$")[2],
+              }),
+              headers: {
+                "content-type": "application/json",
+                // authorization: `Bearer ${accessToken}`,
+              },
+            });
+
+            const res = await response.json();
+
+            res.data.forEach((d: any) => {
+              github_info.push(d);
+            });
+            github_info.sort(function (a, b) {
+              return a.priority_id - b.priority_id;
+            });
+            // console.log(slack_info[0].message);
+            loading = false;
+          }
       }
     });
     tsvscode.postMessage({ type: "dashboard", value: " " });
@@ -72,12 +111,19 @@
 </div>
 {#if loading}
   <div>Loading...</div>
-{:else if info.length > 0}
-  {#if active == "bug"}<Cards {info} type={active} />
+{:else if slack_info.length > 0}
+  {#if active == "bug"}<SlackCards info={slack_info} type={active} />
   {:else if active == "feature"}
-    <Cards {info} type={active} />
+    <SlackCards info={slack_info} type={active} />
   {:else}
-    <Cards {info} type={active} />
+    <SlackCards info={slack_info} type={active} />
+  {/if}
+{:else if github_info.length > 0}
+  {#if active == "bug"}<GithubCards info={github_info} type={active} />
+  {:else if active == "feature"}
+    <GithubCards info={github_info} type={active} />
+  {:else}
+    <GithubCards info={github_info} type={active} />
   {/if}
 {:else}
   <div>No user logged in</div>
