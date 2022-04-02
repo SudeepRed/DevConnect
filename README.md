@@ -20,8 +20,16 @@ Q: And where does it show the classified tasks……..?
 
 A: **VSCode** -  where the developer spends most of his time developing his product.
 
-
-
+## DevConnect Working Examples :white_check_mark:
+### Slack Message Classification 
+#### Feature Request Detection :pencil:
+![Fr](./images_showcase/1s.jpg) ![Fr](./images_showcase/4s.jpg) 
+#### Bug Detection 	:bug:
+![Bugs](./images_showcase/2s.jpg) ![Bugs](./images_showcase/3s.jpg) ![Bugs](./images_showcase/5s.jpg) ![Bugs](./images_showcase/6s.jpg) 
+### Github Issues Classification :octocat:
+![Bugs](./images_showcase/7s.jpg)
+### DevConnect - VSCode Extention Showcase :globe_with_meridians:
+![Bugs](./images_showcase/9s.jpg)
 
 
 
