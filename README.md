@@ -31,6 +31,27 @@ A: **VSCode** -  where the developer spends most of his time developing his prod
 ### DevConnect - VSCode Extention Showcase :globe_with_meridians:
 ![Bugs](./images_showcase/9s.jpg)
 
+## Project Setup
+### Slack
+Create a slack app with the following:
+**Assuming PUBLIC BASE URL would be where the slack bot is running**
+1. Bot scopes = "chat:write", "channels:history","users:read","users:read.email","team:read"]
+2. Setup events and Oauth
+    1. Oauth Redirect URL should be [PUBLIC BASE URL]/slack/oauth_redirect".
+    2. Events URL would be [PUBLIC BASE URL]/slack/events
+Install the app in your workspace.
+
+## Github
+1. In your developer settings initialise a Github App and add the details into the .env file.
+2. Run probot from "backend/github-DevConnectBot" using npm start. 
+3. Get the "smee" link and add that to the Github App Webhook URL with a Webhook secret.
+
+## VSCode-
+1. In the vscode-extention directory run npm install and npm run watch to install packages and compile TS and Svelte files.
+2. Press F5 to start testing the extention.
+
+
+
 
 
 
