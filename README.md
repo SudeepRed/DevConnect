@@ -1,5 +1,9 @@
 <p align=center>
 <img src="https://github.com/SudeepRed/DevConnect/blob/main/images_showcase/DevConnect-logo.png" alt="DevConnect" width="200px">
+    <p align=center>
+<!-- ### :tv: [Product Demo](https://youtu.be/UeXneXKmHkA) :tv: -->
+<a href="https://youtu.be/UeXneXKmHkA"> <h3 align="center">:tv: Product Demo :tv:</h3> </a>
+</p>
 <p align=center>
 <b>Classify messages into bugs and feature requests and assign them a priority</b>
 </p>
@@ -16,15 +20,15 @@
 <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="DevConnect" >
 </p>
 
-### [Product Demo](https://youtu.be/UeXneXKmHkA)
-## The Problem!
+
+## The Problem :scream:
 When developing a product, developers often need feedback from their customers and other devs.
 
 The most effective way to to get this feedback is to have communities on slack, discord, github or reddit.
 
 But the problem comes when the small team of developers is bombarded with issues, bugs, feedbacks, questions, chats, feature requests and much more during the development phase.
 
-## The Solution
+## The Solution :sunglasses:
 
 Now time for developers is very important, and it is impossible to go through each message and classify them manually.
 
@@ -48,8 +52,8 @@ A: **VSCode** -  where the developer spends most of his time developing his prod
 ### DevConnect - VSCode Extention Showcase :globe_with_meridians:
 ![Bugs](./images_showcase/9s.jpg)
 
-## Project Setup
-### Slack
+## Project Setup :zap:
+### Slack 
 Create a slack app with the following:
 **Assuming PUBLIC BASE URL would be where the slack bot is running**
 1. Bot scopes = "chat:write", "channels:history","users:read","users:read.email","team:read"]
