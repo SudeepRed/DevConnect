@@ -1,4 +1,18 @@
-# DevConnect 
+<p align=center>
+<img src="https://github.com/SudeepRed/DevConnect/blob/main/images_showcase/DevConnect-logo.png" alt="DevConnect" width="200px">
+<p align=center>
+<b>Classify messages into bugs and feature requests and assign them a priority</b>
+</p>
+
+<p align=center>
+    
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![Svelte](https://img.shields.io/badge/svelte-%23f1413d.svg?style=for-the-badge&logo=svelte&logoColor=white) ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+    
+</p>
+
+
+
+
 ### [Product Demo](https://youtu.be/UeXneXKmHkA)
 ## The Problem!
 When developing a product, developers often need feedback from their customers and other devs.
