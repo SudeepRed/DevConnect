@@ -5,7 +5,7 @@
 <a href="https://youtu.be/UeXneXKmHkA"> <h3 align="center">:tv: Product Demo :tv:</h3> </a>
 </p>
 <p align=center>
-<b>Classify messages into bugs and feature requests and assign them a priority</b>
+<b>Classify messages into bugs or feature requests and assign them a priority</b>
 </p>
 
 <p align=center>
