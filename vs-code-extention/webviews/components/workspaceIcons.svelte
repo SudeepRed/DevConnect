@@ -1,7 +1,7 @@
 <script lang="ts">
   export let workspaces: { name: any; id: any; icon: any }[];
   export let repo: { name: any }[];
-  export let owner:string;
+  export let owner: string;
 </script>
 
 <div class="sb_content">
@@ -25,12 +25,15 @@
   {#each repo as r}
     <div class="icon">
       <!-- svelte-ignore missing-declaration -->
-      <button class="image button" on:click={() => {
-        tsvscode.postMessage({
-          type: "dashboard",
-          value: "$"+owner+"$"+r.name,
-        });
-      }}>
+      <button
+        class="image button"
+        on:click={() => {
+          tsvscode.postMessage({
+            type: "dashboard",
+            value: "$" + owner + "$" + r.name,
+          });
+        }}
+      >
         <img
           src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           alt={"icon"}

@@ -1,4 +1,5 @@
 import * as _vscode from "vscode";
+
 declare global{
     const tsvscode: {
         postMessage: ({type: string, value: any})=> void;
@@ -7,4 +8,6 @@ declare global{
         };
     };
     const apiBaseUrl: string;
+    const SLACK_URL :string;
+    const GITHUB_URL:string;
 }

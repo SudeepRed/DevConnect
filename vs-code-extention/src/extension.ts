@@ -27,10 +27,10 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("devconnect.authenticate", () => {
       console.log("hello");
-      authenticate();
+      authenticate(()=>{});
     })
   );
-  
+
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
       "devconnect-sidebar",

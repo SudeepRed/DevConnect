@@ -26,6 +26,10 @@
           });
           const slack_workspaces = await responseSlack.json();
           const git_repo = await responseGithub.json();
+          user = null;
+          workspaces = [];
+          repo = [];
+          owner = "";
           console.log(git_repo);
           console.log(slack_workspaces);
           user = slack_workspaces.userInfo;
@@ -59,14 +63,37 @@
   <div>&nbsp;</div>
   <WorkspaceIcons {workspaces} {repo} {owner} />
   <div>&nbsp;</div>
-  <!-- <button class="button" on:click={async () => {}}>Add to slack</button> -->
+  <button
+    class="button"
+    on:click={() => {
+      accessToken = "";
+      user = null;
+      tsvscode.postMessage({ type: "logout", value: undefined });
+    }}>logout</button
+  >
+  <button class="button">
+    <a href={`${SLACK_URL}/slack/install`}>Add to slack </a></button
+  >
+  <button class="button">
+    <a href={`${GITHUB_URL}`}>Add to github repo </a></button
+  >
 {:else}
   <div>No user logged in</div>
+  <button
+    class="button"
+    on:click={() => {
+      tsvscode.postMessage({ type: "authenticate", value: undefined });
+    }}>login with GitHub</button
+  >
 {/if}
-<!-- svelte-ignore missing-declaration -->
 
+<!-- svelte-ignore missing-declaration -->
 <style>
   h2 {
     font-weight: normal;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 </style>

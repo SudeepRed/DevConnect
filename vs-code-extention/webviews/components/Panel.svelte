@@ -164,22 +164,11 @@
       bind:info={github_info}
       type={active}
       summary={groupedData}
-      
     />
   {:else if active == "feature"}
-    <GithubCards
-      bind:info={github_info}
-      type={active}
-      summary={groupedData}
-     
-    />
+    <GithubCards bind:info={github_info} type={active} summary={groupedData} />
   {:else}
-    <GithubCards
-      bind:info={github_info}
-      type={active}
-      summary={groupedData}
-      
-    />
+    <GithubCards bind:info={github_info} type={active} summary={groupedData} />
   {/if}
 {:else}
   <center>No Issues detected</center>

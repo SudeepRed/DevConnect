@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { authenticate } from "./authenticate";
-import { apiBaseUrl } from "./constants";
+import { apiBaseUrl, GITHUB_URL, SLACK_URL } from "./constants";
 import { DevConnectPanel } from "./DevConnectPanel";
 import { getNonce } from "./getNonce";
 import { TokenManager } from "./TokenManger";
@@ -38,15 +38,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           TokenManager.setTeamid(data.value);
           break;
         }
-        // case "authenticate": {
-        //   authenticate(() => {
-        //     webviewView.webview.postMessage({
-        //       type: "token",
-        //       value: TokenManager.getToken(),
-        //     });
-        //   });
-        //   break;
-        // }
+        case "authenticate": {
+          authenticate(() => {
+            webviewView.webview.postMessage({
+              type: "token",
+              value: TokenManager.getToken(),
+            });
+          });
+          break;
+        }
         case "get-token": {
           console.log(TokenManager.getToken());
           webviewView.webview.postMessage({
@@ -115,7 +115,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
         <script nonce="${nonce}">
           const tsvscode = acquireVsCodeApi();
-          const apiBaseUrl = ${JSON.stringify(apiBaseUrl)}
+          const apiBaseUrl = ${JSON.stringify(apiBaseUrl)};
+          const SLACK_URL = ${JSON.stringify(SLACK_URL)};
+          const GITHUB_URL = ${JSON.stringify(GITHUB_URL)};
         </script>
 			</head>
       <body>

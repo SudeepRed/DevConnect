@@ -106,6 +106,7 @@
   },
   "dependencies": {
     "@vscode/codicons": "^0.0.29",
+    "dotenv": "^16.0.0",
     "polka": "^0.5.2",
     "smelte": "^1.1.8"
   }

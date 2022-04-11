@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { apiBaseUrl } from "./constants";
+import { SLACK_URL } from "./constants";
 import { getNonce } from "./getNonce";
 import { TokenManager } from "./TokenManger";
 
@@ -182,6 +183,7 @@ export class DevConnectPanel {
         <script nonce="${nonce}">
         const tsvscode = acquireVsCodeApi();
         const apiBaseUrl = ${JSON.stringify(apiBaseUrl)};
+        const SLACK_URL = ${JSON.stringify(SLACK_URL)};
         </script>
 			</head>
       <body>
