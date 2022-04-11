@@ -71,7 +71,7 @@ const slackApp = new App({
 });
 
 slackApp.message("", async ({ message, say, ack, client }) => {
-  console.log(message);
+  // console.log(message);
   //Ignore thread bot reply
   const link = await slackApp.client.chat.getPermalink({
     token: process.env.SLACK_BOT_TOKEN,
@@ -79,12 +79,12 @@ slackApp.message("", async ({ message, say, ack, client }) => {
     message_ts: message.ts,
   });
   const installation = await DBquery.getInstallation(message.team);
-  console.log(installation);
+  // console.log(installation);
   const userInfo = await client.users.info({
     token: installation.installation.bot.token,
     user: message.user,
   });
-  console.log(userInfo.user.profile);
+  // console.log(userInfo.user.profile);
   if (!message.hasOwnProperty("bot_profile")) {
     const blocks = await slackFunctions.messageResponce(
       message,
@@ -255,9 +255,9 @@ slackApp.message("", async ({ message, say, ack, client }) => {
     const { text } = req.body;
     console.log(req.body);
     if (text) {
-      // const data = await OpenAI.groupThings(text);
-      // console.log(data);
-      return res.send({ data: null });
+      const data = await OpenAI.groupThings(text);
+      console.log(data);
+      return res.send({ data: data });
     } else return res.status(200).json({ data: null });
   });
 

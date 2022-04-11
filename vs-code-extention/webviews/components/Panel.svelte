@@ -16,7 +16,7 @@
     userid: any;
     priority_id: any;
     avatar: any;
-    name:any;
+    name: any;
   }[] = [];
   let github_info: {
     id: any;
@@ -30,10 +30,10 @@
     ts: any;
     priority_id: any;
     category: any;
-    
   }[] = [];
-  let groupedData = "";
-  let messages: string[] =[];
+  let groupedData: string;
+  let messages: string[] = [];
+  let map = new Map();
   onMount(async () => {
     window.addEventListener("message", async (event) => {
       const message = event.data;
@@ -56,23 +56,12 @@
 
             res.data.forEach((d: any) => {
               slack_info.push(d);
-              messages.push(d.message);
+              messages.push(d.message + "(" + d.ts + ")");
+              map.set(d.ts, d);
             });
             slack_info.sort(function (a, b) {
-              return b.ts -a.ts ;
+              return b.ts - a.ts;
             });
-            const gt = await fetch(`${apiBaseUrl}/groupThings`, {
-              method: "POST",
-              body: JSON.stringify({
-                text: messages,
-              }),
-              headers: {
-                "content-type": "application/json",
-                // authorization: `Bearer ${accessToken}`,
-              },
-            });
-            groupedData = await gt.json()
-            console.log(groupedData)
             console.log(slack_info[0].message);
             loading = false;
           } else {
@@ -85,7 +74,6 @@
               }),
               headers: {
                 "content-type": "application/json",
-                // authorization: `Bearer ${accessToken}`,
               },
             });
 
@@ -93,24 +81,12 @@
 
             res.data.forEach((d: any) => {
               github_info.push(d);
-              messages.push(d.message)
+              messages.push(d.message);
+              // map.set()
             });
             github_info.sort(function (a, b) {
               return -(a.ts - b.ts);
             });
-            const gt = await fetch(`${apiBaseUrl}/groupThings`, {
-              method: "POST",
-              body: JSON.stringify({
-                text: messages,
-              }),
-              headers: {
-                "content-type": "application/json",
-                // authorization: `Bearer ${accessToken}`,
-              },
-            });
-            groupedData = await gt.json()
-            console.log(groupedData)
-            // console.log(slack_info[0].message);
             loading = false;
           }
       }
@@ -124,14 +100,33 @@
 <!-- <div>Hello</div> -->
 <div class="tabbar">
   <div style="margin-top: 1em;">
-    {#each ["All", "Bugs", "Feature Requests"] as tab}
+    {#each ["All", "Bugs", "Feature Requests", "Summary"] as tab}
       <button
         class="tab"
-        on:click={() => {
+        on:click={async () => {
           if (tab == "Bugs") {
             active = "bug";
           } else if (tab == "Feature Requests") {
             active = "feature";
+          } else if (tab == "Summary") {
+            loading = true;
+            active = "summary";
+            messages = messages.filter((v, i, a) => a.indexOf(v) === i);
+            const gt = await fetch(`${apiBaseUrl}/groupThings`, {
+              method: "POST",
+              body: JSON.stringify({
+                text: messages,
+              }),
+              headers: {
+                "content-type": "application/json",
+                // authorization: `Bearer ${accessToken}`,
+              },
+            });
+            let summary = await gt.json();
+            groupedData = summary.data;
+
+            console.log(groupedData);
+            loading = false;
           } else {
             active = "all";
           }
@@ -143,21 +138,51 @@
 {#if loading}
   <div>Loading...</div>
 {:else if slack_info.length > 0}
-  {#if active == "bug"}<SlackCards info={slack_info} type={active} />
+  {#if active == "bug"}<SlackCards
+      bind:info={slack_info}
+      type={active}
+      summary={groupedData}
+      {map}
+    />
   {:else if active == "feature"}
-    <SlackCards info={slack_info} type={active} />
+    <SlackCards
+      bind:info={slack_info}
+      type={active}
+      summary={groupedData}
+      {map}
+    />
   {:else}
-    <SlackCards info={slack_info} type={active} />
+    <SlackCards
+      bind:info={slack_info}
+      type={active}
+      summary={groupedData}
+      {map}
+    />
   {/if}
 {:else if github_info.length > 0}
-  {#if active == "bug"}<GithubCards info={github_info} type={active} />
+  {#if active == "bug"}<GithubCards
+      bind:info={github_info}
+      type={active}
+      summary={groupedData}
+      
+    />
   {:else if active == "feature"}
-    <GithubCards info={github_info} type={active} />
+    <GithubCards
+      bind:info={github_info}
+      type={active}
+      summary={groupedData}
+     
+    />
   {:else}
-    <GithubCards info={github_info} type={active} />
+    <GithubCards
+      bind:info={github_info}
+      type={active}
+      summary={groupedData}
+      
+    />
   {/if}
 {:else}
-  <div>No user logged in</div>
+  <center>No Issues detected</center>
 {/if}
 
 <style>
