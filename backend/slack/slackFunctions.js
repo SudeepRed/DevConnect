@@ -9,10 +9,10 @@ const messageResponce = async (message, link, user_info) => {
   }
   const classifiedCategory = await OpenAI.classifyChat(text);
 
-  if (classifiedCategory.includes("chat")) {
+  if (classifiedCategory.includes("chat") && !(classifiedCategory.includes("feature") || classifiedCategory.includes("bug"))) {
     return null;
   } else if (classifiedCategory.includes("bug")) {
-    const messageTitle = await OpenAI.addTitle(text);
+    const messageTitle = await OpenAI.addTitle(text,"bug");
     let priority = getPriority(classifiedCategory);
 
     const slack_post = {
@@ -32,7 +32,7 @@ const messageResponce = async (message, link, user_info) => {
     let blocks = slackBlocks.getBugBlock(messageTitle, priority);
     return blocks;
   } else if (classifiedCategory.includes("feature")) {
-    const outputTitle = await OpenAI.addTitle(text);
+    const outputTitle = await OpenAI.addTitle(text,"feature");
     let blocks = slackBlocks.getFeatureBlock(outputTitle);
     const slack_post = {
       teamid: message.team,

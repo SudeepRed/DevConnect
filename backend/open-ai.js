@@ -15,16 +15,23 @@ const classifyChat = async (message) => {
     max_tokens: 10,
     top_p: 1,
     frequency_penalty: 0,
-    presence_penalty: 0,
+    presence_penalty: 2,
     best_of: 1,
   });
   const output = response.data.choices[0].text.toLowerCase();
   console.log(output);
   return output;
 };
-const addTitle = async (message) => {
+const addTitle = async (message,type) => {
+  let prompt = "";
+  if(type=="feature"){
+    prompt = "extract the feature request from the following message and give it a title.\n"
+  }
+  else{
+    prompt = "You are a GitHub issue generator. you will be given a bug, you have to add a suitable title for it so that developers can generate a bug report.\n"
+  }
   const response = await openai.createCompletion("text-davinci-002", {
-    prompt: "Add a title to the following message.\n" + message,
+    prompt: prompt+"\n" + message,
     temperature: 0,
     max_tokens: 70,
     top_p: 1,
@@ -43,7 +50,7 @@ const addTitle = async (message) => {
 const groupThings = async (message) => {
   message = JSON.stringify(message)
   console.log(message);
-  message = (message.replace(/[\[\]']+/g,'-'))
+  message = (message.replace(/[\[\]]+/g,'-'))
   message = message.replaceAll(',"', '\n-')
   message = message.replaceAll('"','')
   message = message.trim()
@@ -60,6 +67,7 @@ const groupThings = async (message) => {
     presence_penalty: 0,
   });
   let output = response.data.choices[0].text.replace(/(\r\n|\n|\r)/gm, "");
+  console.log()
   console.log(output);
   let isJSON = false;
   try {
@@ -67,6 +75,7 @@ const groupThings = async (message) => {
     isJSON = true;
   } catch (e) {
     output = "";
+    console.log("no JSON for u");
   }
   return output;
   // return null;

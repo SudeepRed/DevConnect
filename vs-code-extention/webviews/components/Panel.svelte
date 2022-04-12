@@ -56,8 +56,8 @@
 
             res.data.forEach((d: any) => {
               slack_info.push(d);
-              messages.push(d.message + "(" + d.ts + ")");
-              map.set(d.ts, d);
+              messages.push(d.title);
+              map.set(d.title, d);
             });
             slack_info.sort(function (a, b) {
               return b.ts - a.ts;
@@ -111,7 +111,7 @@
           } else if (tab == "Summary") {
             loading = true;
             active = "summary";
-            messages = messages.filter((v, i, a) => a.indexOf(v) === i);
+            // messages = messages.filter((v, i, a) => a.indexOf(v) === i);
             const gt = await fetch(`${apiBaseUrl}/groupThings`, {
               method: "POST",
               body: JSON.stringify({
@@ -124,7 +124,7 @@
             });
             let summary = await gt.json();
             groupedData = summary.data;
-
+            console.log("Done, gt")
             console.log(groupedData);
             loading = false;
           } else {

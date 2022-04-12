@@ -1,5 +1,6 @@
 <script lang="ts">
   import { match } from "assert";
+  import { hasContext } from "svelte";
 
   export let type: string;
   export let info: {
@@ -55,7 +56,7 @@
             class="button del"
             on:click={() => {
               info = info.filter((i) => i != w);
-              console.log(info, "hello");
+              // console.log(info, "hello");
             }}>Complete</button
           >
           <img src={w.avatar} alt="oops" />
@@ -98,7 +99,7 @@
             class="button del"
             on:click={() => {
               info = info.filter((i) => i != w);
-              console.log(info, "hello");
+              // console.log(info, "hello");
             }}>Complete</button
           >
           <img src={w.avatar} alt="oops" />
@@ -143,7 +144,7 @@
             class="button del"
             on:click={() => {
               info = info.filter((i) => i != w);
-              console.log(info, "hello");
+              // console.log(info, "hello");
             }}>Complete</button
           >
           <img src={w.avatar} alt="oops" />
@@ -156,19 +157,30 @@
     <div class="summary" style="background-color:{color}">
       <div class="feature">📝{key}</div>
       <ol>
-        {#each value as v}
+        <!-- {console.log(value, map.has(value),"Hello")} -->
+        {#if value.length > 0}
+          {#each value as v}
+            <!-- {console.log(map.get(v.match(/\(([^)]+)\)/)))} -->
+            <li>
+              <a href={map.get(v).message_link}>{map.get(v).message}</a>
+            </li>
+          {/each}
+        
+        {:else if map.has(key)}
           <li>
-            <a href={map.get(v.match(/\(([^)]+)\)/)[1]).message_link}
-              >{v.replace(/ *\([^)]*\) */g, "")}</a
-            >
+            <a href={map.get(key).message_link}>{map.get(key).message}</a>
           </li>
-        {/each}
+        {/if}
       </ol>
     </div>
   {/each}
 {/if}
 
 <style>
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
   .del {
     /* margin-top: -5px;
      */
