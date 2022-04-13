@@ -111,7 +111,7 @@
           } else if (tab == "Summary") {
             loading = true;
             active = "summary";
-            // messages = messages.filter((v, i, a) => a.indexOf(v) === i);
+            messages = messages.filter((v, i, a) => a.indexOf(v) === i);
             const gt = await fetch(`${apiBaseUrl}/groupThings`, {
               method: "POST",
               body: JSON.stringify({

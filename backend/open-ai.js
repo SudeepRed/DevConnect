@@ -15,9 +15,10 @@ const classifyChat = async (message) => {
     max_tokens: 10,
     top_p: 1,
     frequency_penalty: 0,
-    presence_penalty: 2,
+    presence_penalty: 1,
     best_of: 1,
   });
+  console.log(response.data.choices);
   const output = response.data.choices[0].text.toLowerCase();
   console.log(output);
   return output;

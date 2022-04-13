@@ -8,7 +8,7 @@ const messageResponce = async (message, link, user_info) => {
     return null;
   }
   const classifiedCategory = await OpenAI.classifyChat(text);
-
+  console.log( classifiedCategory)
   if (classifiedCategory.includes("chat") && !(classifiedCategory.includes("feature") || classifiedCategory.includes("bug"))) {
     return null;
   } else if (classifiedCategory.includes("bug")) {

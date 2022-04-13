@@ -10,11 +10,12 @@ module.exports = (app) => {
   app.log.info("Yay, the app was loaded!");
 
   app.on("issues.opened", async (context) => {
+    console.log(context.payload.issue)
     if (context.payload.issue.title.length > 10) {
       let classifiedCategory = await OpenAI.classifyChat(
         context.payload.issue.title
       );
-
+        console.log( classifiedCategory, "Hello")
       if (
         classifiedCategory.includes("bug") ||
         classifiedCategory.includes("feature")
