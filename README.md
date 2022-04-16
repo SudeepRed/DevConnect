@@ -2,7 +2,7 @@
 <img src="https://github.com/SudeepRed/DevConnect/blob/main/images_showcase/DevConnect-logo.png" alt="DevConnect" width="200px">
     <p align=center>
 <!-- ### :tv: [Product Demo](https://youtu.be/UeXneXKmHkA) :tv: -->
-<a href="https://youtu.be/UeXneXKmHkA"> <h3 align="center">:tv: Product Demo :tv:</h3> </a>
+<a href="https://www.youtube.com/watch?v=WQ5potD98e8"> <h3 align="center">:tv: Product Demo :tv:</h3> </a>
 </p>
 <p align=center>
 <b>Classify messages into bugs or feature requests and assign them a priority</b>
