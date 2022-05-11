@@ -68,6 +68,7 @@ const groupThings = async (message) => {
     presence_penalty: 0,
   });
   let output = response.data.choices[0].text.replace(/(\r\n|\n|\r)/gm, "");
+  output = output.substring(output.indexOf("{"))
   console.log()
   console.log(output);
   let isJSON = false;

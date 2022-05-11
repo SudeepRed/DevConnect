@@ -230,7 +230,8 @@ slackApp.message("", async ({ message, say, ack, client }) => {
     passport.authenticate("github", { session: false }),
     function (req, res) {
       // res.send("redirecting");
-      res.redirect(`http://localhost:54321/auth/${req.user.accessToken}`);
+      console.log("auth")
+      res.redirect(`http://localhost:8000/auth/${req.user.accessToken}`);
     }
   );
   expressApp.post("/getInfo/slack", async (req, res) => {

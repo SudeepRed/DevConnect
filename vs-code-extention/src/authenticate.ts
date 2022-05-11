@@ -16,10 +16,12 @@ export const authenticate = (fn: () => void) => {
     res.end(`<h1>Sucess</h1>`);
     (app as any).server.close();
   });
-  app.listen(54321, (err: Error) => {
+  app.listen(8000, (err: Error) => {
     if (err) {
+      console.log(err);
       vscode.window.showErrorMessage(err.message);
     } else {
+      console.log("Success!");
       vscode.commands.executeCommand(
         "vscode.open",
         vscode.Uri.parse(`${apiBaseUrl}/auth/github`)
